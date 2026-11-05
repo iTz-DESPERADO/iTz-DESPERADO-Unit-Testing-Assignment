@@ -38,4 +38,31 @@ public class RentalMathTests
         // Assert
         result.Should().Be(expected);
     }
+
+    [Theory]
+    [InlineData("2020-05-15", "2025-05-15", 5)]
+    [InlineData("2020-05-15", "2025-05-16", 5)]
+
+    [InlineData("2020-02-29", "2025-02-28", 5)]
+    [InlineData("2020-02-29", "2025-03-01", 5)]
+
+    [InlineData("2020-02-29", "2024-02-29", 4)]
+    [InlineData("2020-02-29", "2024-03-01", 4)]
+
+    [Trait("Rule", "BR-02")]
+    public void CalculateLicenseYears_GivenIssueDates_ReturnsCorrectLicenseYears(string issueDate, string onDate, int expected)
+    {
+        // Arrange
+        var issue = DateTime.ParseExact(
+            issueDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        var calculationDate = DateTime.ParseExact(
+            onDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        // Act
+        var result = RentalMath.CalculateLicenseYears(issue, calculationDate);
+
+        // Assert
+        result.Should().Be(expected);
+    }
 }
