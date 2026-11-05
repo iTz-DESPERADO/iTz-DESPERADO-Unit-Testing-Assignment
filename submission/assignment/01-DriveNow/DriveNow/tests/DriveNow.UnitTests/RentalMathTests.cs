@@ -20,6 +20,8 @@ public class RentalMathTests
     [InlineData("2000-02-29", "2025-02-28", 25)]
     [InlineData("2000-02-29", "2025-03-01", 25)]
 
+    [InlineData("2000-03-29", "2000-03-29", 0)]
+
     [Trait("Rule", "BR-01")]
     public void CalculateAge_ValidDate_ReturnsCorrectAge(string dateOfBirth, string onDate, int expected)
     {
