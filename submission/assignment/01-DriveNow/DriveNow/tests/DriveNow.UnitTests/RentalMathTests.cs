@@ -83,4 +83,100 @@ public class RentalMathTests
         // Assert
         result.Should().Be(expected);
     }
+
+    [Theory]
+    [InlineData("2026-11-04 10:00:00", "2026-11-05 10:00:00", 1)]
+    [InlineData("2026-11-04 10:00:00", "2026-11-05 11:00:00", 1)]
+    [Trait("Rule", "BR-03")]
+    public void CalculateRentalDays_WithinGracePeriod_ReturnsOneDay(string pickup, string returnAt, int expected)
+    {
+        // Arrange
+        var pickupDate = DateTime.ParseExact(
+            pickup,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        var returnDate = DateTime.ParseExact(
+            returnAt,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        // Act
+        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData("2026-11-04 10:00:00", "2026-11-05 11:01:00", 2)]
+    [Trait("Rule", "BR-03")]
+    public void CalculateRentalDays_BeyondGracePeriod_ReturnsTwoDays(string pickup, string returnAt, int expected)
+    {
+        // Arrange
+        var pickupDate = DateTime.ParseExact(
+            pickup,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        var returnDate = DateTime.ParseExact(
+            returnAt,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        // Act
+        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData("2026-11-04 10:00:00", "2026-11-04 10:00:01", 1)]
+    [Trait("Rule", "BR-03")]
+    public void CalculateRentalDays_MinimumDuration_ReturnsOneDay(string pickup, string returnAt, int expected)
+    {
+        // Arrange
+        var pickupDate = DateTime.ParseExact(
+            pickup,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        var returnDate = DateTime.ParseExact(
+            returnAt,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        // Act
+        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData("2026-11-04 10:00:00", "2026-11-04 10:00:00")]
+    [InlineData("2026-11-04 10:00:00", "2026-11-04 09:59:59")]
+    [Trait("Rule", "BR-03")]
+    public void CalculateRentalDays_InvalidReturnTime_ThrowsArgumentException(string pickup, string returnAt)
+    {
+        // Arrange
+        var pickupDate = DateTime.ParseExact(
+            pickup,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        var returnDate = DateTime.ParseExact(
+            returnAt,
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture);
+
+        // Act
+        Action act = () => RentalMath.CalculateRentalDays(pickupDate, returnDate);
+
+        // Assert
+        act.Should()
+            .Throw<ArgumentException>()
+            .WithMessage("Return must be after pickup");
+    }
 }
