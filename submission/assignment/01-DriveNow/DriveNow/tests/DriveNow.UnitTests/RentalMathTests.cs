@@ -49,6 +49,24 @@ public class RentalMathTests
     [InlineData("2020-02-29", "2024-02-29", 4)]
     [InlineData("2020-02-29", "2024-03-01", 4)]
 
+    // Before anniversary
+    [InlineData("2020-05-15", "2025-05-14", 4)]
+
+    // Leap day in a non-leap year
+    [InlineData("2020-02-29", "2025-02-27", 4)]
+
+    // Before leap-day anniversary in a leap year
+    [InlineData("2020-02-29", "2024-02-28", 3)]
+
+    // Same issue date
+    [InlineData("2025-05-15", "2025-05-15", 0)]
+
+    // Less than one complete year
+    [InlineData("2025-05-15", "2026-05-14", 0)]
+
+    // Calendar-year boundary
+    [InlineData("2020-12-31", "2025-01-01", 4)]
+
     [Trait("Rule", "BR-02")]
     public void CalculateLicenseYears_GivenIssueDates_ReturnsCorrectLicenseYears(string issueDate, string onDate, int expected)
     {

@@ -41,3 +41,29 @@ Group / ID: G4
 | BR-02 | CalculateLicenseYears_GivenIssueDates_ReturnsCorrectLicenseYears |غطيت الحالات من تاريخ اصدار الرخصه وبعده وكمان  تأكدت من الاصدار لما يكون 29 فبراير في السنوات الكبيسة وغير الكبيسة |
 
 عارف ان فيه حالات ناقصة زي اليوم اللي قبل اكتمال سنة من اصدار الرخصة وكمان لما المدة تكون اقل من سنة
+
+
+### AI Suggestions Review — CalculateLicenseYears
+
+| AI Suggestion | Decision | Why |
+|---|---|---|
+| Day before anniversary | Accepted | Missing from initial tests |
+| Exact anniversary | Rejected | Already covered using InlineData |
+| Day after anniversary | Rejected | Already covered using InlineData |
+| Before leap-year anniversary | Accepted | Missing from initial tests |
+| Before adjusted anniversary in non-leap year | Accepted | Missing from initial tests |
+| Other leap-year boundaries | Rejected | Already covered using InlineData |
+| Other non-leap-year boundaries | Rejected | Already covered using InlineData |
+| Same issue date | Accepted | Verify that the result is 0 |
+| Less than one complete year | Accepted | Verify that incomplete years are not counted |
+| Anniversary still ahead | Rejected | Covered by the accepted before-anniversary case |
+| Year transition | Accepted | Verify calculation across calendar-year boundaries |
+| Multiple non-leap years | Rejected | The adjustment rule is already tested in a non-leap year |
+| Future issue date | Rejected | Behavior is not specified in BR-02 |
+| Separate tests for CalculateAge | Rejected | BR-01 is already tested separately |
+
+#### Judge the AI — CalculateLicenseYears
+
+ اقترح اضافة اختبارات مباشرة لدالة `CalculateAge` بس انا اختبرت قاعدة العمل `BR-01` بشكل منفصل  وعلشان هيك الاضافة مش  ضرورية
+
+قبلت اقتراحات اضافة الحالات الحدية قبل ذكرى اصدار الرخصه وحالات السنوات الصفرية والانتقال بين السنوات الميلادية بهدف تحسين تغطية الاختبارات الخاصة بقاعدة العمل `BR-02`
