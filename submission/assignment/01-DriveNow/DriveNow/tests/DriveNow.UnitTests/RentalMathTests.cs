@@ -87,6 +87,8 @@ public class RentalMathTests
     [Theory]
     [InlineData("2026-11-04 10:00:00", "2026-11-05 10:00:00", 1)]
     [InlineData("2026-11-04 10:00:00", "2026-11-05 11:00:00", 1)]
+    // AI suggestion: one minute before the grace period ends.
+    [InlineData("2026-11-04 10:00:00", "2026-11-05 10:59:00", 1)]
     [Trait("Rule", "BR-03")]
     public void CalculateRentalDays_WithinGracePeriod_ReturnsOneDay(string pickup, string returnAt, int expected)
     {
@@ -110,6 +112,8 @@ public class RentalMathTests
 
     [Theory]
     [InlineData("2026-11-04 10:00:00", "2026-11-05 11:01:00", 2)]
+    // AI suggestion: exceeding the grace period by one second adds a day.
+    [InlineData("2026-11-04 10:00:00", "2026-11-05 11:00:01", 2)]
     [Trait("Rule", "BR-03")]
     public void CalculateRentalDays_BeyondGracePeriod_ReturnsTwoDays(string pickup, string returnAt, int expected)
     {
@@ -133,6 +137,9 @@ public class RentalMathTests
 
     [Theory]
     [InlineData("2026-11-04 10:00:00", "2026-11-04 10:00:01", 1)]
+    // AI suggestion: short rental example and just before the first full day.
+    [InlineData("2026-11-04 10:00:00", "2026-11-04 13:00:00", 1)]
+    [InlineData("2026-11-04 10:00:00", "2026-11-05 09:59:00", 1)]
     [Trait("Rule", "BR-03")]
     public void CalculateRentalDays_MinimumDuration_ReturnsOneDay(string pickup, string returnAt, int expected)
     {
@@ -146,6 +153,49 @@ public class RentalMathTests
             returnAt,
             "yyyy-MM-dd HH:mm:ss",
             CultureInfo.InvariantCulture);
+
+        // Act
+        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
+    // AI suggestion: count multiple complete 24-hour blocks.
+    [InlineData("2026-11-04 10:00:00", "2026-11-06 10:00:00", 2)]
+    [InlineData("2026-11-04 10:00:00", "2026-11-07 10:00:00", 3)]
+    [Trait("Rule", "BR-03")]
+    public void CalculateRentalDays_MultipleFullDays_ReturnsFullDayCount(string pickup, string returnAt, int expected)
+    {
+        // Arrange
+        var pickupDate = DateTime.ParseExact(
+            pickup, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var returnDate = DateTime.ParseExact(
+            returnAt, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        // Act
+        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
+    // AI suggestion: grace boundaries after two full days (59 / 60 / 61 minutes).
+    [InlineData("2026-11-04 10:00:00", "2026-11-06 10:59:00", 2)]
+    [InlineData("2026-11-04 10:00:00", "2026-11-06 11:00:00", 2)]
+    [InlineData("2026-11-04 10:00:00", "2026-11-06 11:01:00", 3)]
+    [Trait("Rule", "BR-03")]
+    public void CalculateRentalDays_GracePeriodAfterTwoDays_ReturnsCorrectDays(string pickup, string returnAt, int expected)
+    {
+        // Arrange
+        var pickupDate = DateTime.ParseExact(
+            pickup, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var returnDate = DateTime.ParseExact(
+            returnAt, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
         // Act
         var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
