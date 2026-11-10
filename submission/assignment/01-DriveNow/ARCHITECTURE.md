@@ -96,3 +96,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Audit log
 
 حطيت IAuditLog في DriveNow.Domain.Interfaces كعقد لتسجيل رساله بدون تفاصيل الملف التنفيذ فضل في Infrastructure.Logging وبقى كائن بدل static وConsoleApp بيمرره للخدمات بعد فصل السجل ما بقاش فيه استخدام لـ Infrastructure في Application شلت مرجع المشروع منه وبقى بيعتمد على Domain بس
+
+## Task 4 — Instance data store
+
+حولت InMemoryDatabase لكائن مستقل ومررته للمستودعات الاربعه المخزن فضل في Infrastructure.Persistence لانه تفاصيل تخزين وApplication لسه بيتعامل مع واجهات المستودعات فقط ConsoleApp بينشئ مخزن واحد بساعة النظام وبيشاركه بين المستودعات علشان سلوك البرنامج يفضل زي الاول القوائم وعداد الحجوزات بقوا مستقلين لكل كائن وتواريخ البيانات الاوليه بتعتمد على TimeProvider
