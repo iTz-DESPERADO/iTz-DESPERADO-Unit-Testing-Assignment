@@ -17,18 +17,19 @@ public class BookingService
     readonly CustomerRepo _customers = new();
     readonly VehicleRepository _vehicles = new();
     readonly BookingRepository _bookings = new();
-    readonly PromoCodeRepository _promos = new();
+    readonly IPromoCodeRepository _promos;
     readonly PricingService _pricing;
     readonly PaymentGateway _payments = new();
     readonly SmsSender _sms = new();
     readonly EmailSender _email = new();
 
     public BookingService(PricingService pricing, TimeProvider timeProvider,
-        IBookingReferenceGenerator referenceGenerator)
+        IBookingReferenceGenerator referenceGenerator, IPromoCodeRepository promos)
     {
         _pricing = pricing;
         _timeProvider = timeProvider;
         _referenceGenerator = referenceGenerator;
+        _promos = promos;
     }
 
     public Booking CreateBooking(BookingRequest request)

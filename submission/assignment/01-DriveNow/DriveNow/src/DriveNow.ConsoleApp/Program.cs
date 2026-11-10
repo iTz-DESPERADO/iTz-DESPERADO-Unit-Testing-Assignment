@@ -21,9 +21,9 @@ internal static class Program
     static readonly PromoCodeRepository Promos = new();
     static readonly PricingService Pricing = new(TimeProvider.System, Promos);
     static readonly BookingService BookingService = new(
-        Pricing, TimeProvider.System, new BookingReferenceGeneratorService());
+        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos);
     static readonly ReturnService ReturnService = new(TimeProvider.System);
-    static readonly CancellationService CancellationService = new(TimeProvider.System);
+    static readonly CancellationService CancellationService = new(TimeProvider.System, Promos);
 
     static void Main()
     {

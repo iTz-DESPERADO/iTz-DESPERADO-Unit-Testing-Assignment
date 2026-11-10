@@ -64,3 +64,5 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 حطيت IPromoCodeRepository في DriveNow.Domain.Interfaces لانه عقد للوصول لكيان PromoCode الموجود في Domain
 
  التنفيذ فضل في Infrastructure.Repositories وPricingService بقى يعتمد على الواجهه بدل التنفيذ ConsoleApp بيمرر المستودع للخدمه كده التسعير ما بقاش مرتبط بـ Infrastructure 
+
+كملت استخدام IPromoCodeRepository في BookingService وCancellationService كمان ConsoleApp بيمرر نفس المستودع للتسعير والحجز والالغاء والخدمتين بيعتمدوا على عقد Domain بدل نوع مستودع الخصم في Infrastructure
