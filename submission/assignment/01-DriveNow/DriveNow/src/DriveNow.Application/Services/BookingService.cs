@@ -42,8 +42,8 @@ public class BookingService
     public Booking CreateBooking(BookingRequest request)
     {
         var customer = RequireCustomer(request.CustomerId);
-        var age = RentalMath.CalculateAge(customer.DateOfBirth, request.PickupAt);
-        var licenseYears = RentalMath.CalculateLicenseYears(customer.LicenseIssueDate, request.PickupAt);
+        var age = RentalMathService.CalculateAge(customer.DateOfBirth, request.PickupAt);
+        var licenseYears = RentalMathService.CalculateLicenseYears(customer.LicenseIssueDate, request.PickupAt);
         RejectCustomer(customer, age, licenseYears);
 
         var vehicle = _vehicles.GetById(request.VehicleId)

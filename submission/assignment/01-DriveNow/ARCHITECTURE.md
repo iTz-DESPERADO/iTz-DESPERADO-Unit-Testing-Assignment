@@ -104,3 +104,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Text file writer
 
 حطيت ITextFileWriter في Infrastructure.Interfaces لانه تفاصيل ملفات تخص تنفيذ البريد والسجل فقط ومش مطلوب في Domain او Application. TextFileWriter بينفذ عمليات الملفات الحقيقيه وEmailSender وAuditLog بيستقبلوا الواجهه والمسار ConsoleApp بيمرر نفس مسارات outbox وaudit.log القديمه وفي الاختبار اقدر استخدم بديل يحفظ المحتوى في الذاكره
+
+## Task 4 — Rental math service name
+
+غيرت اسم RentalMath وملفه لـ RentalMathService علشان اسم الخدمه ينتهي بـ Service حسب NAMING.md حدثت استخداماته في التطبيق والاختبارات بدون تغيير الحسابات او اسماء الاختبارات وحالاتها 

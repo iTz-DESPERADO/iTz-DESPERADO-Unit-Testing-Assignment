@@ -111,7 +111,7 @@ internal static class Program
     {
         foreach (var customer in Customers.GetAll())
         {
-            var age = RentalMath.CalculateAge(customer.DateOfBirth, DateTime.Today);
+            var age = RentalMathService.CalculateAge(customer.DateOfBirth, DateTime.Today);
             Console.WriteLine(
                 $"{customer.Id,2}  {customer.FullName,-16} age {age,2}  {customer.LoyaltyTier,-10} rentals {customer.CompletedRentals,2}  {(customer.IsBlacklisted ? "blacklisted" : "clear")}");
         }

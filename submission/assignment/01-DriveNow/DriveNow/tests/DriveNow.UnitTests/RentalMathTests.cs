@@ -33,7 +33,7 @@ public class RentalMathTests
             onDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
         // Act
-        var result = RentalMath.CalculateAge(birthDate, calculationDate);
+        var result = RentalMathService.CalculateAge(birthDate, calculationDate);
 
         // Assert
         result.Should().Be(expected);
@@ -78,7 +78,7 @@ public class RentalMathTests
             onDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
         // Act
-        var result = RentalMath.CalculateLicenseYears(issue, calculationDate);
+        var result = RentalMathService.CalculateLicenseYears(issue, calculationDate);
 
         // Assert
         result.Should().Be(expected);
@@ -104,7 +104,7 @@ public class RentalMathTests
             CultureInfo.InvariantCulture);
 
         // Act
-        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+        var result = RentalMathService.CalculateRentalDays(pickupDate, returnDate);
 
         // Assert
         result.Should().Be(expected);
@@ -129,7 +129,7 @@ public class RentalMathTests
             CultureInfo.InvariantCulture);
 
         // Act
-        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+        var result = RentalMathService.CalculateRentalDays(pickupDate, returnDate);
 
         // Assert
         result.Should().Be(expected);
@@ -155,7 +155,7 @@ public class RentalMathTests
             CultureInfo.InvariantCulture);
 
         // Act
-        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+        var result = RentalMathService.CalculateRentalDays(pickupDate, returnDate);
 
         // Assert
         result.Should().Be(expected);
@@ -176,7 +176,7 @@ public class RentalMathTests
             returnAt, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
         // Act
-        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+        var result = RentalMathService.CalculateRentalDays(pickupDate, returnDate);
 
         // Assert
         result.Should().Be(expected);
@@ -198,7 +198,7 @@ public class RentalMathTests
             returnAt, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
         // Act
-        var result = RentalMath.CalculateRentalDays(pickupDate, returnDate);
+        var result = RentalMathService.CalculateRentalDays(pickupDate, returnDate);
 
         // Assert
         result.Should().Be(expected);
@@ -222,7 +222,7 @@ public class RentalMathTests
             CultureInfo.InvariantCulture);
 
         // Act
-        Action act = () => RentalMath.CalculateRentalDays(pickupDate, returnDate);
+        Action act = () => RentalMathService.CalculateRentalDays(pickupDate, returnDate);
 
         // Assert
         act.Should()
