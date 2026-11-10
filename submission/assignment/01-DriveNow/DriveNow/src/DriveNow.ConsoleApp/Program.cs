@@ -8,6 +8,7 @@ using DriveNow.Domain.Exceptions;
 using DriveNow.Domain.Services;
 using DriveNow.Domain.ValueObjects;
 using DriveNow.Infrastructure.External;
+using DriveNow.Infrastructure.Logging;
 using DriveNow.Infrastructure.Repositories;
 using DriveNow.Infrastructure.Services;
 
@@ -22,11 +23,12 @@ internal static class Program
     static readonly PaymentGateway Payments = new();
     static readonly SmsSender Sms = new();
     static readonly EmailSender Email = new();
+    static readonly AuditLog Audit = new();
     static readonly PricingService Pricing = new(TimeProvider.System, Promos);
     static readonly BookingService BookingService = new(
-        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles, Customers, Payments, Sms, Email);
-    static readonly ReturnService ReturnService = new(TimeProvider.System, Bookings, Vehicles, Customers, Payments, Email);
-    static readonly CancellationService CancellationService = new(TimeProvider.System, Promos, Bookings, Vehicles, Customers, Payments, Sms, Email);
+        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles, Customers, Payments, Sms, Email, Audit);
+    static readonly ReturnService ReturnService = new(TimeProvider.System, Bookings, Vehicles, Customers, Payments, Email, Audit);
+    static readonly CancellationService CancellationService = new(TimeProvider.System, Promos, Bookings, Vehicles, Customers, Payments, Sms, Email, Audit);
 
     static void Main()
     {

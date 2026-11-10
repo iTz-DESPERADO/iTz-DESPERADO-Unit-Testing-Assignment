@@ -4,7 +4,6 @@ using DriveNow.Domain.Enums;
 using DriveNow.Domain.Exceptions;
 using DriveNow.Domain.Interfaces;
 using DriveNow.Domain.Services;
-using DriveNow.Infrastructure.Logging;
 
 namespace DriveNow.Application.Services;
 
@@ -20,11 +19,12 @@ public class BookingService
     readonly IPaymentGateway _payments;
     readonly ISmsSender _sms;
     readonly IEmailSender _email;
+    readonly IAuditLog _auditLog;
 
     public BookingService(PricingService pricing, TimeProvider timeProvider,
         IBookingReferenceGenerator referenceGenerator, IPromoCodeRepository promos,
         IBookingRepository bookings, IVehicleRepository vehicles, ICustomerRepository customers,
-        IPaymentGateway payments, ISmsSender sms, IEmailSender email)
+        IPaymentGateway payments, ISmsSender sms, IEmailSender email, IAuditLog auditLog)
     {
         _pricing = pricing;
         _timeProvider = timeProvider;
@@ -35,6 +35,7 @@ public class BookingService
         _customers = customers;
         _payments = payments;
         _email = email;
+        _auditLog = auditLog;
         _sms = sms;
     }
 
@@ -94,7 +95,7 @@ public class BookingService
         var note = $"Booking {booking.Reference} confirmed";
         _sms.Send(customer.Phone, note);
         _email.Send(customer.Email, note, note);
-        AuditLog.Write($"Booking {booking.Reference} created");
+        _auditLog.Write($"Booking {booking.Reference} created");
         return booking;
     }
 
@@ -109,7 +110,7 @@ public class BookingService
 
         booking.Status = BookingStatus.Active;
         _bookings.Update(booking);
-        AuditLog.Write($"Booking {booking.Reference} started");
+        _auditLog.Write($"Booking {booking.Reference} started");
     }
 
     Customer RequireCustomer(int customerId)

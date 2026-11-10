@@ -92,3 +92,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Email sender
 
 حطيت IEmailSender في DriveNow.Domain.Interfaces كعقد لارسال البريد بدون تفاصيل الملفات التنفيذ فضل في Infrastructure.External وConsoleApp بيمرره للحجز والارجاع والالغاء الخدمات ما بقتش تستخدم انواع Infrastructure.External مباشرة وفي الاختبار اقدر افحص المستلم والعنوان والمحتوى بدون كتابة ملفات
+
+## Task 4 — Audit log
+
+حطيت IAuditLog في DriveNow.Domain.Interfaces كعقد لتسجيل رساله بدون تفاصيل الملف التنفيذ فضل في Infrastructure.Logging وبقى كائن بدل static وConsoleApp بيمرره للخدمات بعد فصل السجل ما بقاش فيه استخدام لـ Infrastructure في Application شلت مرجع المشروع منه وبقى بيعتمد على Domain بس

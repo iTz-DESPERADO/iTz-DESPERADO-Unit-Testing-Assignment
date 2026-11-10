@@ -5,7 +5,6 @@ using DriveNow.Domain.Interfaces;
 using DriveNow.Domain.Services;
 using DriveNow.Domain.ValueObjects;
 using DriveNow.Application.Receipts;
-using DriveNow.Infrastructure.Logging;
 
 namespace DriveNow.Application.Services;
 
@@ -17,10 +16,11 @@ public class ReturnService
     readonly ICustomerRepository _customers;
     readonly IPaymentGateway _payments;
     readonly IEmailSender _email;
+    readonly IAuditLog _auditLog;
 
     public ReturnService(TimeProvider timeProvider, IBookingRepository bookings,
         IVehicleRepository vehicles, ICustomerRepository customers,
-        IPaymentGateway payments, IEmailSender email)
+        IPaymentGateway payments, IEmailSender email, IAuditLog auditLog)
     {
         _timeProvider = timeProvider;
         _bookings = bookings;
@@ -28,6 +28,7 @@ public class ReturnService
         _customers = customers;
         _payments = payments;
         _email = email;
+        _auditLog = auditLog;
     }
 
     public ReturnReport ProcessReturn(int bookingId, int endMileage, int fuelQuarters, decimal damageCost)
@@ -73,7 +74,7 @@ public class ReturnService
             new CurrencyFormatter(),
             new ReceiptFormatter()).Build(booking, report);
         _email.Send(customer.Email, $"Receipt {booking.Reference}", receipt);
-        AuditLog.Write($"Booking {booking.Reference} returned");
+        _auditLog.Write($"Booking {booking.Reference} returned");
         return report;
     }
 
