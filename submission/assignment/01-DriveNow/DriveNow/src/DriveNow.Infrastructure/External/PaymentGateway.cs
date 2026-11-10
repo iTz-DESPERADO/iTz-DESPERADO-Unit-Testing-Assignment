@@ -5,10 +5,12 @@ namespace DriveNow.Infrastructure.External;
 public class PaymentGateway : IPaymentGateway
 {
     readonly Random _random;
+    readonly Action<TimeSpan> _delay;
 
-    public PaymentGateway(Random random)
+    public PaymentGateway(Random random, Action<TimeSpan> delay)
     {
         _random = random;
+        _delay = delay;
     }
 
     public string Charge(int customerId, decimal amount, string description)
@@ -26,7 +28,7 @@ public class PaymentGateway : IPaymentGateway
 
     void PauseAndMaybeFail()
     {
-        Thread.Sleep(1500);
+        _delay(TimeSpan.FromMilliseconds(1500));
         if (_random.Next(10) == 0)
             throw new PaymentFailedException("Gateway timeout");
     }

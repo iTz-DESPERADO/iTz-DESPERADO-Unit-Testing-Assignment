@@ -21,8 +21,8 @@ internal static class Program
     static readonly VehicleRepository Vehicles = new(Database);
     static readonly BookingRepository Bookings = new(Database);
     static readonly PromoCodeRepository Promos = new(Database);
-    static readonly PaymentGateway Payments = new(new Random());
-    static readonly SmsSender Sms = new();
+    static readonly PaymentGateway Payments = new(new Random(), Thread.Sleep);
+    static readonly SmsSender Sms = new(Thread.Sleep);
     static readonly TextFileWriter Files = new();
     static readonly EmailSender Email = new(
         TimeProvider.System, Files, Path.Combine(AppContext.BaseDirectory, "outbox"));

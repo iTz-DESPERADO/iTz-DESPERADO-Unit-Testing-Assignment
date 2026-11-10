@@ -127,3 +127,7 @@ BookingReferenceGeneratorService بقى يستقبل Random من ConsoleApp بد
 ## Task 4 — Payment randomness
 
 PaymentGateway بقى يستقبل Random من ConsoleApp بدل انشائه داخله شرط الفشل فضل Nالمرجع فضل PAY- وبعده 8 حروف او ارقام نفس كائن Random بيستخدم للفشل والمرجع وبين الاستدعاءات وفي الاختبار اقدر امرر بديل يتحكم في 
+
+## Task 4 — Payment and SMS delays
+
+فصلت Thread.Sleep من PaymentGateway وSmsSender بتمرير Action<TimeSpan>. ConsoleApp لسه بينتظر نفس 1500ms للدفع و500ms للرساله والاختبارات تقدر تلغي الانتظار
