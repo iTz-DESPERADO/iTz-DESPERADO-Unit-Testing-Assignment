@@ -16,3 +16,4 @@ Group / ID: G4
 | BookingService | 58, 150–159  | RandomCode وتوليد مرجع عشوائي | مرجع الحجز بيتغير في كل تشغيل ومش بقدر اثبته في الاختبار | مررت IBookingReferenceGenerator في constructor ونقلت التنفيذ العشوائي لـ BookingReferenceGeneratorService وربطته من ConsoleApp |
 | PricingService | 13  | انشاء PromoCodeRepository داخل الكلاس | مش بقدر اتحكم في بيانات اكواد الخصم بدون المخزن الحقيقي | مررت IPromoCodeRepository في constructor وربطت التنفيذ من ConsoleApp المخزن static لسه هيتعدل في خطوه لاحقه |
 | BookingService / CancellationService | 17 / 14  | انشاء PromoCodeRepository داخل الخدمتين | مش بقدر اعزل قراءة كود الخصم وتحديث عدد استخداماته في الاختبار | مررت IPromoCodeRepository للخدمتين من ConsoleApp  |
+| BookingService / ReturnService / CancellationService | 16 / 15 / 11  | انشاء BookingRepository داخل الخدمات | الاختبارات بتعتمد على مخزن الحجوزات الحقيقي ومش بقدر ابدله | مررت IBookingRepository للخدمات الثلاثه من ConsoleApp |

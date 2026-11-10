@@ -66,3 +66,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
  التنفيذ فضل في Infrastructure.Repositories وPricingService بقى يعتمد على الواجهه بدل التنفيذ ConsoleApp بيمرر المستودع للخدمه كده التسعير ما بقاش مرتبط بـ Infrastructure 
 
 كملت استخدام IPromoCodeRepository في BookingService وCancellationService كمان ConsoleApp بيمرر نفس المستودع للتسعير والحجز والالغاء والخدمتين بيعتمدوا على عقد Domain بدل نوع مستودع الخصم في Infrastructure
+
+## Task 4 — Booking repository
+
+حطيت IBookingRepository في DriveNow.Domain.Interfaces لانه عقد تخزين واسترجاع كيان Booking التنفيذ فضل في Infrastructure.Repositories وخدمات الحجز والارجاع والالغاء بتستقبل الواجهه من ConsoleApp كده اقدر ابدل مستودع الحجوزات في الاختبار من غير اعتماد على تنفيذه الحقيقي

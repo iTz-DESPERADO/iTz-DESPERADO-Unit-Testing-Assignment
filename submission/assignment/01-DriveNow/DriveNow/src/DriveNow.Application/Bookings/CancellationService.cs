@@ -10,7 +10,7 @@ namespace DriveNow.Application.Bookings;
 public class CancellationService
 {
     readonly TimeProvider _timeProvider;
-    readonly BookingRepository _bookings = new();
+    readonly IBookingRepository _bookings;
     readonly VehicleRepository _vehicles = new();
     readonly CustomerRepo _customers = new();
     readonly IPromoCodeRepository _promos;
@@ -18,10 +18,12 @@ public class CancellationService
     readonly SmsSender _sms = new();
     readonly EmailSender _email = new();
 
-    public CancellationService(TimeProvider timeProvider, IPromoCodeRepository promos)
+    public CancellationService(TimeProvider timeProvider, IPromoCodeRepository promos,
+        IBookingRepository bookings)
     {
         _timeProvider = timeProvider;
         _promos = promos;
+        _bookings = bookings;
     }
 
     public decimal Cancel(int bookingId)

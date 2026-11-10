@@ -1,6 +1,7 @@
 using DriveNow.Domain.Entities;
 using DriveNow.Domain.Enums;
 using DriveNow.Domain.Exceptions;
+using DriveNow.Domain.Interfaces;
 using DriveNow.Domain.Services;
 using DriveNow.Domain.ValueObjects;
 using DriveNow.Application.Receipts;
@@ -13,15 +14,16 @@ namespace DriveNow.Application.Services;
 public class ReturnService
 {
     readonly TimeProvider _timeProvider;
-    readonly BookingRepository _bookings = new();
+    readonly IBookingRepository _bookings;
     readonly VehicleRepository _vehicles = new();
     readonly CustomerRepo _customers = new();
     readonly PaymentGateway _payments = new();
     readonly EmailSender _email = new();
 
-    public ReturnService(TimeProvider timeProvider)
+    public ReturnService(TimeProvider timeProvider, IBookingRepository bookings)
     {
         _timeProvider = timeProvider;
+        _bookings = bookings;
     }
 
     public ReturnReport ProcessReturn(int bookingId, int endMileage, int fuelQuarters, decimal damageCost)
