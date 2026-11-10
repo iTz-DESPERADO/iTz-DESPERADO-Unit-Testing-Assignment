@@ -7,7 +7,6 @@ using DriveNow.Domain.ValueObjects;
 using DriveNow.Application.Receipts;
 using DriveNow.Infrastructure.External;
 using DriveNow.Infrastructure.Logging;
-using DriveNow.Infrastructure.Repositories;
 
 namespace DriveNow.Application.Services;
 
@@ -16,16 +15,17 @@ public class ReturnService
     readonly TimeProvider _timeProvider;
     readonly IBookingRepository _bookings;
     readonly IVehicleRepository _vehicles;
-    readonly CustomerRepo _customers = new();
+    readonly ICustomerRepository _customers;
     readonly PaymentGateway _payments = new();
     readonly EmailSender _email = new();
 
     public ReturnService(TimeProvider timeProvider, IBookingRepository bookings,
-        IVehicleRepository vehicles)
+        IVehicleRepository vehicles, ICustomerRepository customers)
     {
         _timeProvider = timeProvider;
         _bookings = bookings;
         _vehicles = vehicles;
+        _customers = customers;
     }
 
     public ReturnReport ProcessReturn(int bookingId, int endMileage, int fuelQuarters, decimal damageCost)

@@ -6,7 +6,6 @@ using DriveNow.Domain.Interfaces;
 using DriveNow.Domain.Services;
 using DriveNow.Infrastructure.External;
 using DriveNow.Infrastructure.Logging;
-using DriveNow.Infrastructure.Repositories;
 
 namespace DriveNow.Application.Services;
 
@@ -14,7 +13,7 @@ public class BookingService
 {
     readonly TimeProvider _timeProvider;
     readonly IBookingReferenceGenerator _referenceGenerator;
-    readonly CustomerRepo _customers = new();
+    readonly ICustomerRepository _customers;
     readonly IVehicleRepository _vehicles;
     readonly IBookingRepository _bookings;
     readonly IPromoCodeRepository _promos;
@@ -25,7 +24,7 @@ public class BookingService
 
     public BookingService(PricingService pricing, TimeProvider timeProvider,
         IBookingReferenceGenerator referenceGenerator, IPromoCodeRepository promos,
-        IBookingRepository bookings, IVehicleRepository vehicles)
+        IBookingRepository bookings, IVehicleRepository vehicles, ICustomerRepository customers)
     {
         _pricing = pricing;
         _timeProvider = timeProvider;
@@ -33,6 +32,7 @@ public class BookingService
         _promos = promos;
         _bookings = bookings;
         _vehicles = vehicles;
+        _customers = customers;
     }
 
     public Booking CreateBooking(BookingRequest request)

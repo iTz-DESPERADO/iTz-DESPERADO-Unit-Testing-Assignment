@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using DriveNow.Application.Bookings;
 using DriveNow.Application.Models;
 using DriveNow.Application.Receipts;
@@ -15,15 +15,15 @@ namespace DriveNow.ConsoleApp;
 
 internal static class Program
 {
-    static readonly CustomerRepo Customers = new();
+    static readonly CustomerRepository Customers = new();
     static readonly VehicleRepository Vehicles = new();
     static readonly BookingRepository Bookings = new();
     static readonly PromoCodeRepository Promos = new();
     static readonly PricingService Pricing = new(TimeProvider.System, Promos);
     static readonly BookingService BookingService = new(
-        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles);
-    static readonly ReturnService ReturnService = new(TimeProvider.System, Bookings, Vehicles);
-    static readonly CancellationService CancellationService = new(TimeProvider.System, Promos, Bookings, Vehicles);
+        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles, Customers);
+    static readonly ReturnService ReturnService = new(TimeProvider.System, Bookings, Vehicles, Customers);
+    static readonly CancellationService CancellationService = new(TimeProvider.System, Promos, Bookings, Vehicles, Customers);
 
     static void Main()
     {

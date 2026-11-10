@@ -18,3 +18,4 @@ Group / ID: G4
 | BookingService / CancellationService | 17 / 14  | انشاء PromoCodeRepository داخل الخدمتين | مش بقدر اعزل قراءة كود الخصم وتحديث عدد استخداماته في الاختبار | مررت IPromoCodeRepository للخدمتين من ConsoleApp  |
 | BookingService / ReturnService / CancellationService | 16 / 15 / 11  | انشاء BookingRepository داخل الخدمات | الاختبارات بتعتمد على مخزن الحجوزات الحقيقي ومش بقدر ابدله | مررت IBookingRepository للخدمات الثلاثه من ConsoleApp |
 | BookingService / ReturnService / CancellationService | 15 / 16 / 12  | انشاء VehicleRepository داخل الخدمات | مش بقدر اتحكم في بيانات السيارات وتحديثها بدون المخزن الحقيقي | مررت IVehicleRepository للخدمات الثلاثه من ConsoleApp|
+| BookingService / ReturnService / CancellationService | 14 / 17 / 13  | انشاء CustomerRepo داخل الخدمات | مش بقدر اتحكم في بيانات العميل وتحديثها بدون المخزن الحقيقي | مررت ICustomerRepository من ConsoleApp وغيرت اسم التنفيذ لـ CustomerRepository

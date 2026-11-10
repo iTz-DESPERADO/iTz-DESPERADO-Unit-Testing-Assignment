@@ -74,3 +74,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Vehicle repository
 
 حطيت IVehicleRepository في DriveNow.Domain.Interfaces لانه عقد للوصول لكيان Vehicle وتحديثه التنفيذ فضل في Infrastructure.Repositories وخدمات الحجز والارجاع والالغاء بتستقبل الواجهه من ConsoleApp كده اقدر ابدل بيانات السيارات في الاختبار من غير تغيير الخدمات
+
+## Task 4 — Customer repository
+
+حطيت ICustomerRepository في DriveNow.Domain.Interfaces لانه عقد للوصول لكيان Customer وتحديثه غيرت اسم CustomerRepo لـ CustomerRepository علشان يطابق NAMING.md ومررت الواجهه لخدمات الحجز والارجاع والالغاء من ConsoleApp الخدمات دي ما بقتش تستخدم انواع repositories من Infrastructure لكن باقي اعتماديات الخدمات الخارجيه لسه موجوده
