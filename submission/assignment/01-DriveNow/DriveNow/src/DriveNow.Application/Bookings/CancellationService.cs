@@ -1,7 +1,6 @@
 using DriveNow.Domain.Enums;
 using DriveNow.Domain.Exceptions;
 using DriveNow.Domain.Interfaces;
-using DriveNow.Infrastructure.External;
 using DriveNow.Infrastructure.Logging;
 
 namespace DriveNow.Application.Bookings;
@@ -15,11 +14,11 @@ public class CancellationService
     readonly IPromoCodeRepository _promos;
     readonly IPaymentGateway _payments;
     readonly ISmsSender _sms;
-    readonly EmailSender _email = new();
+    readonly IEmailSender _email;
 
     public CancellationService(TimeProvider timeProvider, IPromoCodeRepository promos,
         IBookingRepository bookings, IVehicleRepository vehicles, ICustomerRepository customers,
-        IPaymentGateway payments, ISmsSender sms)
+        IPaymentGateway payments, ISmsSender sms, IEmailSender email)
     {
         _timeProvider = timeProvider;
         _promos = promos;
@@ -27,6 +26,7 @@ public class CancellationService
         _vehicles = vehicles;
         _customers = customers;
         _payments = payments;
+        _email = email;
         _sms = sms;
     }
 

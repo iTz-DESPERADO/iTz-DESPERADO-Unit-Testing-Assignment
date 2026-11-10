@@ -4,7 +4,6 @@ using DriveNow.Domain.Enums;
 using DriveNow.Domain.Exceptions;
 using DriveNow.Domain.Interfaces;
 using DriveNow.Domain.Services;
-using DriveNow.Infrastructure.External;
 using DriveNow.Infrastructure.Logging;
 
 namespace DriveNow.Application.Services;
@@ -20,12 +19,12 @@ public class BookingService
     readonly PricingService _pricing;
     readonly IPaymentGateway _payments;
     readonly ISmsSender _sms;
-    readonly EmailSender _email = new();
+    readonly IEmailSender _email;
 
     public BookingService(PricingService pricing, TimeProvider timeProvider,
         IBookingReferenceGenerator referenceGenerator, IPromoCodeRepository promos,
         IBookingRepository bookings, IVehicleRepository vehicles, ICustomerRepository customers,
-        IPaymentGateway payments, ISmsSender sms)
+        IPaymentGateway payments, ISmsSender sms, IEmailSender email)
     {
         _pricing = pricing;
         _timeProvider = timeProvider;
@@ -35,6 +34,7 @@ public class BookingService
         _vehicles = vehicles;
         _customers = customers;
         _payments = payments;
+        _email = email;
         _sms = sms;
     }
 

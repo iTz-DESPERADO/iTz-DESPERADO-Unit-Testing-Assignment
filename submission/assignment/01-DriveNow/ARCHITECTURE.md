@@ -88,3 +88,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 حطيت ISmsSender في DriveNow.Domain.Interfaces كعقد بسيط لارسال الرسائل بدون تفاصيل التنفيذ Application وInfrastructure بيعتمدوا على العقد والتنفيذ فضل في Infrastructure.External
 
  ConsoleApp بيمرره للحجز والالغاء وفي الاختبار اقدر اتحقق من رقم العميل ونص الرساله من غير تشغيل SmsSender الحقيقي
+
+## Task 4 — Email sender
+
+حطيت IEmailSender في DriveNow.Domain.Interfaces كعقد لارسال البريد بدون تفاصيل الملفات التنفيذ فضل في Infrastructure.External وConsoleApp بيمرره للحجز والارجاع والالغاء الخدمات ما بقتش تستخدم انواع Infrastructure.External مباشرة وفي الاختبار اقدر افحص المستلم والعنوان والمحتوى بدون كتابة ملفات
