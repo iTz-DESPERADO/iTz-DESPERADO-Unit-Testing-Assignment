@@ -1,7 +1,7 @@
 using DriveNow.Domain.Entities;
 using DriveNow.Domain.ValueObjects;
 
-namespace DriveNow.Application.Receipts;
+namespace DriveNow.Application.Interfaces;
 
 public interface ILineItemFactory
 {

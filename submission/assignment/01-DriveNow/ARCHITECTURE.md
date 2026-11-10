@@ -112,3 +112,9 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Service namespaces
 
 نقلت CancellationService من Bookings وReceiptService من Receipts لمجلد وnamespace اسمه DriveNow.Application.Services حسب NAMING.md حدثت using في ConsoleApp واختبارات Legacy بدون تغيير منطق الخدمات او assertions الاختبارات وصف المخالفات القديم فوق بيوثق حاله الكود قبل التعديل
+
+## Task 4 — Receipt interfaces
+
+نقلت ICurrencyFormatter وILineItemFactory وIReceiptFormatter وITaxCalculator لـ DriveNow.Application.Interfaces علشان يطابقوا NAMING.md دي عقود خاصه بتجهيز وعرض الفاتوره في Application والتنفيذ فضل في Receipts حدثت استخداماتهم في الخدمات والتنفيذ واختبارات Legacy بدون تغيير سلوك الفاتوره او assertions الاختبارات
+
+بعد نقل الواجهات شغلت اختبارات المعماريه كلها: 15 نجحوا و0 فشلوا في 197ms اختبارات Legacy الخمسه نجحت كمان

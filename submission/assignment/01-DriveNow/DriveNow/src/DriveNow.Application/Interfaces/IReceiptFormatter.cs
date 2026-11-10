@@ -1,4 +1,4 @@
-namespace DriveNow.Application.Receipts;
+namespace DriveNow.Application.Interfaces;
 
 public interface IReceiptFormatter
 {
