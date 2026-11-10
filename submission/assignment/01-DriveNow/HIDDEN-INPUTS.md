@@ -29,3 +29,4 @@ Group / ID: G4
 | AuditLog | 8  | DateTime.Now في رساله السجل | توقيت الرساله مش بقدر اثبته في الاختبار | مررت TimeProvider واستخدمت الوقت المحلي مع فرق التوقيت بنفس تنسيق|
 | EmailSender / AuditLog | 7–11 / 7–8  | AppContext.BaseDirectory وDirectory وFile | الاختبار بيكتب على الجهاز وبيتاثر بمكان التشغيل وصلاحيات الملفات | مررت المسارات وITextFileWriter من ConsoleApp الكتابه الحقيقيه بقت في TextFileWriter فقط وممكن استبداله في الاختبار |
 | BookingReferenceGeneratorService | 10 | new Random داخل Generate | مش بقدر اتحكم في العشوائيه لما اختبر تنفيذ المولد نفسه | مررت Random في constructor وConsoleApp بينشئه في الاختبار اقدر امرره  |
+| PaymentGateway | 21, 28–31 | new Random لفشل الدفع ومرجع العمليه | مش بقدر اتحكم في نجاح الدفع وفشله او مرجع العمليه عند اختبار التنفيذ | مررت Random في constructor من ConsoleApp واستخدمته في المكانين الانتظار والطباعة لسه موجودين في التنفيذ الحقيقي |

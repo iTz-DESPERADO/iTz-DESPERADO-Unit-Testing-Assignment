@@ -4,6 +4,13 @@ namespace DriveNow.Infrastructure.External;
 
 public class PaymentGateway : IPaymentGateway
 {
+    readonly Random _random;
+
+    public PaymentGateway(Random random)
+    {
+        _random = random;
+    }
+
     public string Charge(int customerId, decimal amount, string description)
     {
         PauseAndMaybeFail();
@@ -17,20 +24,19 @@ public class PaymentGateway : IPaymentGateway
         Console.WriteLine($"[Payment] Refunded {amount:N2} EGP to customer #{customerId}");
     }
 
-    static void PauseAndMaybeFail()
+    void PauseAndMaybeFail()
     {
         Thread.Sleep(1500);
-        if (new Random().Next(10) == 0)
+        if (_random.Next(10) == 0)
             throw new PaymentFailedException("Gateway timeout");
     }
 
-    static string RandomCode()
+    string RandomCode()
     {
         const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var random = new Random();
         var chars = new char[8];
         for (var i = 0; i < chars.Length; i++)
-            chars[i] = alphabet[random.Next(alphabet.Length)];
+            chars[i] = alphabet[_random.Next(alphabet.Length)];
 
         return new string(chars);
     }

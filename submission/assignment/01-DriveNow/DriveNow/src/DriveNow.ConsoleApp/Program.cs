@@ -21,7 +21,7 @@ internal static class Program
     static readonly VehicleRepository Vehicles = new(Database);
     static readonly BookingRepository Bookings = new(Database);
     static readonly PromoCodeRepository Promos = new(Database);
-    static readonly PaymentGateway Payments = new();
+    static readonly PaymentGateway Payments = new(new Random());
     static readonly SmsSender Sms = new();
     static readonly TextFileWriter Files = new();
     static readonly EmailSender Email = new(

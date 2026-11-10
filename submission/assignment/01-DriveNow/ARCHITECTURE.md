@@ -123,3 +123,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Reference generator randomness
 
 BookingReferenceGeneratorService بقى يستقبل Random من ConsoleApp بدل ما ينشئه داخل Generate صيغه DN والتاريخ والاربع حروف او ارقام فضلت زي ما هي المولد بيستخدم نفس كائن Random بين الاستدعاءات بدل انشاء كائن كل مره وفي الاختبار اقدر اثبت مصدر العشوائيه بدون واجهه اضافيه
+
+## Task 4 — Payment randomness
+
+PaymentGateway بقى يستقبل Random من ConsoleApp بدل انشائه داخله شرط الفشل فضل Nالمرجع فضل PAY- وبعده 8 حروف او ارقام نفس كائن Random بيستخدم للفشل والمرجع وبين الاستدعاءات وفي الاختبار اقدر امرر بديل يتحكم في 
