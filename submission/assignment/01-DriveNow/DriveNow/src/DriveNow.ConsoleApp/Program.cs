@@ -18,7 +18,7 @@ internal static class Program
     static readonly VehicleRepository Vehicles = new();
     static readonly BookingRepository Bookings = new();
     static readonly PricingService Pricing = new(TimeProvider.System);
-    static readonly BookingService BookingService = new(Pricing);
+    static readonly BookingService BookingService = new(Pricing, TimeProvider.System);
     static readonly ReturnService ReturnService = new(TimeProvider.System);
     static readonly CancellationService CancellationService = new(TimeProvider.System);
 
