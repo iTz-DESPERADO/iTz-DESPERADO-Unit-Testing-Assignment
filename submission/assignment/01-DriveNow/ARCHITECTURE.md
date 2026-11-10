@@ -53,3 +53,8 @@ Expected result.IsSuccessful to be True because R2 offending types: DriveNow.App
 Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration: 89 ms - DriveNow.ArchitectureTests.dll (net10.0)
 ```
 
+
+## Task 4 — Booking reference generator
+
+حطيت IBookingReferenceGenerator في DriveNow.Domain.Interfaces لانه عقد لتوليد مرجع الحجز والتنفيذ العشوائي في DriveNow.Infrastructure.Services كده Application وInfrastructure بيعتمدوا على عقد في Domain من غير ما Domain يعتمد عليهم
+ ConsoleApp بيربط التنفيذ بخدمة الحجز وفي الاختبار اقدر امرر مولد بيرجع مرجع ثابت

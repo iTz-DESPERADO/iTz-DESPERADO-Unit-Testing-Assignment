@@ -2,6 +2,7 @@ using DriveNow.Application.Models;
 using DriveNow.Domain.Entities;
 using DriveNow.Domain.Enums;
 using DriveNow.Domain.Exceptions;
+using DriveNow.Domain.Interfaces;
 using DriveNow.Domain.Services;
 using DriveNow.Infrastructure.External;
 using DriveNow.Infrastructure.Logging;
@@ -12,6 +13,7 @@ namespace DriveNow.Application.Services;
 public class BookingService
 {
     readonly TimeProvider _timeProvider;
+    readonly IBookingReferenceGenerator _referenceGenerator;
     readonly CustomerRepo _customers = new();
     readonly VehicleRepository _vehicles = new();
     readonly BookingRepository _bookings = new();
@@ -21,10 +23,12 @@ public class BookingService
     readonly SmsSender _sms = new();
     readonly EmailSender _email = new();
 
-    public BookingService(PricingService pricing, TimeProvider timeProvider)
+    public BookingService(PricingService pricing, TimeProvider timeProvider,
+        IBookingReferenceGenerator referenceGenerator)
     {
         _pricing = pricing;
         _timeProvider = timeProvider;
+        _referenceGenerator = referenceGenerator;
     }
 
     public Booking CreateBooking(BookingRequest request)
@@ -62,7 +66,7 @@ public class BookingService
             Status = BookingStatus.Reserved,
             CreatedAt = _timeProvider.GetLocalNow().DateTime,
             StartMileage = vehicle.Mileage,
-            Reference = "DN-" + request.PickupAt.ToString("yyyyMMdd") + "-" + RandomCode()
+            Reference = _referenceGenerator.Generate(request.PickupAt)
         };
 
         booking.Deposit = DepositFor(vehicle.Category, request.InsurancePlan, customer.LoyaltyTier);
@@ -154,14 +158,4 @@ public class BookingService
         return deposit;
     }
 
-    static string RandomCode()
-    {
-        const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var random = new Random();
-        var chars = new char[4];
-        for (var i = 0; i < chars.Length; i++)
-            chars[i] = alphabet[random.Next(alphabet.Length)];
-
-        return new string(chars);
-    }
 }
