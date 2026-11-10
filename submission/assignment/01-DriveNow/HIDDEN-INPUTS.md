@@ -25,3 +25,5 @@ Group / ID: G4
 | BookingService / ReturnService / CancellationService | 79, 94 / 68 / 68  | AuditLog.Write الثابت | بيكتب ملف حقيقي وبيعتمد على وقت الجهاز ومش بقدر ابدله في اختبار الخدمات | حولت AuditLog لكائن بيطبق IAuditLog ومررته من ConsoleApp  |
 | InMemoryDatabase والمستودعات الاربعه | 7–15 (في InMemoryDatabase الاصلي) | قوائم البيانات وNextBookingId من نوع static | الاختبارات بتغير نفس البيانات وبتاثر على بعض | حولت المخزن لكائن والمستودعات بتستقبله في constructor. ConsoleApp بيمرر نفس الكائن للمستودعات وكل اختبار يقدر يعمل كائن مستقل |
 | InMemoryDatabase | 19–124  | DateTime.Today في البيانات الاوليه | تواريخ العملاء والخصومات والحجوزات بتتغير حسب يوم التشغيل | مررت TimeProvider للمخزن واستخدمت تاريخ محلي واحد لتجهيز البيانات |
+| EmailSender | 9  | DateTime.Now في اسم ملف البريد | اسم الملف بيتغير حسب وقت الجهاز | مررت TimeProvider واستخدمت الوقت المحلي منه في اسم الملف |
+| AuditLog | 8  | DateTime.Now في رساله السجل | توقيت الرساله مش بقدر اثبته في الاختبار | مررت TimeProvider واستخدمت الوقت المحلي مع فرق التوقيت بنفس تنسيق|
