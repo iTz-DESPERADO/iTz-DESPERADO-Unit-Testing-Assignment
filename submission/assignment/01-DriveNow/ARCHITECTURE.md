@@ -108,3 +108,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Rental math service name
 
 غيرت اسم RentalMath وملفه لـ RentalMathService علشان اسم الخدمه ينتهي بـ Service حسب NAMING.md حدثت استخداماته في التطبيق والاختبارات بدون تغيير الحسابات او اسماء الاختبارات وحالاتها 
+
+## Task 4 — Service namespaces
+
+نقلت CancellationService من Bookings وReceiptService من Receipts لمجلد وnamespace اسمه DriveNow.Application.Services حسب NAMING.md حدثت using في ConsoleApp واختبارات Legacy بدون تغيير منطق الخدمات او assertions الاختبارات وصف المخالفات القديم فوق بيوثق حاله الكود قبل التعديل

@@ -2,7 +2,7 @@ using DriveNow.Domain.Enums;
 using DriveNow.Domain.Exceptions;
 using DriveNow.Domain.Interfaces;
 
-namespace DriveNow.Application.Bookings;
+namespace DriveNow.Application.Services;
 
 public class CancellationService
 {
