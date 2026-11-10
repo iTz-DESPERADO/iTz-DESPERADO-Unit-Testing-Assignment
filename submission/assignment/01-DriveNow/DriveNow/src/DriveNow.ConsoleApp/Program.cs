@@ -24,8 +24,11 @@ internal static class Program
     static readonly PromoCodeRepository Promos = new(Database);
     static readonly PaymentGateway Payments = new();
     static readonly SmsSender Sms = new();
-    static readonly EmailSender Email = new(TimeProvider.System);
-    static readonly AuditLog Audit = new(TimeProvider.System);
+    static readonly TextFileWriter Files = new();
+    static readonly EmailSender Email = new(
+        TimeProvider.System, Files, Path.Combine(AppContext.BaseDirectory, "outbox"));
+    static readonly AuditLog Audit = new(
+        TimeProvider.System, Files, Path.Combine(AppContext.BaseDirectory, "audit.log"));
     static readonly PricingService Pricing = new(TimeProvider.System, Promos);
     static readonly BookingService BookingService = new(
         Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles, Customers, Payments, Sms, Email, Audit);

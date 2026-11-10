@@ -100,3 +100,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Instance data store
 
 حولت InMemoryDatabase لكائن مستقل ومررته للمستودعات الاربعه المخزن فضل في Infrastructure.Persistence لانه تفاصيل تخزين وApplication لسه بيتعامل مع واجهات المستودعات فقط ConsoleApp بينشئ مخزن واحد بساعة النظام وبيشاركه بين المستودعات علشان سلوك البرنامج يفضل زي الاول القوائم وعداد الحجوزات بقوا مستقلين لكل كائن وتواريخ البيانات الاوليه بتعتمد على TimeProvider
+
+## Task 4 — Text file writer
+
+حطيت ITextFileWriter في Infrastructure.Interfaces لانه تفاصيل ملفات تخص تنفيذ البريد والسجل فقط ومش مطلوب في Domain او Application. TextFileWriter بينفذ عمليات الملفات الحقيقيه وEmailSender وAuditLog بيستقبلوا الواجهه والمسار ConsoleApp بيمرر نفس مسارات outbox وaudit.log القديمه وفي الاختبار اقدر استخدم بديل يحفظ المحتوى في الذاكره
