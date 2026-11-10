@@ -1,6 +1,8 @@
+using DriveNow.Domain.Interfaces;
+
 namespace DriveNow.Infrastructure.External;
 
-public class PaymentGateway
+public class PaymentGateway : IPaymentGateway
 {
     public string Charge(int customerId, decimal amount, string description)
     {
