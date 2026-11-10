@@ -20,7 +20,7 @@ internal static class Program
     static readonly PricingService Pricing = new();
     static readonly BookingService BookingService = new();
     static readonly ReturnService ReturnService = new();
-    static readonly CancellationService CancellationService = new();
+    static readonly CancellationService CancellationService = new(TimeProvider.System);
 
     static void Main()
     {

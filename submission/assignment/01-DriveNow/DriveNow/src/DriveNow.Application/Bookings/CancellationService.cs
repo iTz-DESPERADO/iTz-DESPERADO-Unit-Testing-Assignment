@@ -8,6 +8,7 @@ namespace DriveNow.Application.Bookings;
 
 public class CancellationService
 {
+    readonly TimeProvider _timeProvider;
     readonly BookingRepository _bookings = new();
     readonly VehicleRepository _vehicles = new();
     readonly CustomerRepo _customers = new();
@@ -16,13 +17,18 @@ public class CancellationService
     readonly SmsSender _sms = new();
     readonly EmailSender _email = new();
 
+    public CancellationService(TimeProvider timeProvider)
+    {
+        _timeProvider = timeProvider;
+    }
+
     public decimal Cancel(int bookingId)
     {
         var booking = _bookings.GetById(bookingId)
             ?? throw new BookingNotFoundException($"Booking #{bookingId} not found");
         if (booking.Status != BookingStatus.Reserved)
             throw new InvalidBookingStateException("Only reserved bookings can be cancelled");
-        if (DateTime.Now >= booking.PickupAt)
+        if (_timeProvider.GetLocalNow().DateTime >= booking.PickupAt)
             throw new InvalidBookingStateException("Booking has already started");
 
         var vehicle = _vehicles.GetById(booking.VehicleId)
@@ -30,7 +36,7 @@ public class CancellationService
         var customer = _customers.GetById(booking.CustomerId)
             ?? throw new CustomerNotFoundException($"Customer #{booking.CustomerId} not found");
 
-        var hours = (booking.PickupAt - DateTime.Now).TotalHours;
+        var hours = (booking.PickupAt - _timeProvider.GetLocalNow().DateTime).TotalHours;
         var fee = 0m;
         if (customer.LoyaltyTier != LoyaltyTier.Platinum)
         {
