@@ -28,3 +28,4 @@ Group / ID: G4
 | EmailSender | 9  | DateTime.Now في اسم ملف البريد | اسم الملف بيتغير حسب وقت الجهاز | مررت TimeProvider واستخدمت الوقت المحلي منه في اسم الملف |
 | AuditLog | 8  | DateTime.Now في رساله السجل | توقيت الرساله مش بقدر اثبته في الاختبار | مررت TimeProvider واستخدمت الوقت المحلي مع فرق التوقيت بنفس تنسيق|
 | EmailSender / AuditLog | 7–11 / 7–8  | AppContext.BaseDirectory وDirectory وFile | الاختبار بيكتب على الجهاز وبيتاثر بمكان التشغيل وصلاحيات الملفات | مررت المسارات وITextFileWriter من ConsoleApp الكتابه الحقيقيه بقت في TextFileWriter فقط وممكن استبداله في الاختبار |
+| BookingReferenceGeneratorService | 10 | new Random داخل Generate | مش بقدر اتحكم في العشوائيه لما اختبر تنفيذ المولد نفسه | مررت Random في constructor وConsoleApp بينشئه في الاختبار اقدر امرره  |

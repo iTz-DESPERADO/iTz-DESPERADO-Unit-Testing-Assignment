@@ -118,3 +118,8 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 نقلت ICurrencyFormatter وILineItemFactory وIReceiptFormatter وITaxCalculator لـ DriveNow.Application.Interfaces علشان يطابقوا NAMING.md دي عقود خاصه بتجهيز وعرض الفاتوره في Application والتنفيذ فضل في Receipts حدثت استخداماتهم في الخدمات والتنفيذ واختبارات Legacy بدون تغيير سلوك الفاتوره او assertions الاختبارات
 
 بعد نقل الواجهات شغلت اختبارات المعماريه كلها: 15 نجحوا و0 فشلوا في 197ms اختبارات Legacy الخمسه نجحت كمان
+
+
+## Task 4 — Reference generator randomness
+
+BookingReferenceGeneratorService بقى يستقبل Random من ConsoleApp بدل ما ينشئه داخل Generate صيغه DN والتاريخ والاربع حروف او ارقام فضلت زي ما هي المولد بيستخدم نفس كائن Random بين الاستدعاءات بدل انشاء كائن كل مره وفي الاختبار اقدر اثبت مصدر العشوائيه بدون واجهه اضافيه

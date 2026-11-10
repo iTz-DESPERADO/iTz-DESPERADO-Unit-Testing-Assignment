@@ -30,7 +30,7 @@ internal static class Program
         TimeProvider.System, Files, Path.Combine(AppContext.BaseDirectory, "audit.log"));
     static readonly PricingService Pricing = new(TimeProvider.System, Promos);
     static readonly BookingService BookingService = new(
-        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles, Customers, Payments, Sms, Email, Audit);
+        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(new Random()), Promos, Bookings, Vehicles, Customers, Payments, Sms, Email, Audit);
     static readonly ReturnService ReturnService = new(TimeProvider.System, Bookings, Vehicles, Customers, Payments, Email, Audit);
     static readonly CancellationService CancellationService = new(TimeProvider.System, Promos, Bookings, Vehicles, Customers, Payments, Sms, Email, Audit);
 
