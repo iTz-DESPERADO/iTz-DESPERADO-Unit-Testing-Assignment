@@ -10,7 +10,13 @@ namespace DriveNow.Application.Services;
 
 public class PricingService
 {
+    readonly TimeProvider _timeProvider;
     readonly PromoCodeRepository _promos = new();
+
+    public PricingService(TimeProvider timeProvider)
+    {
+        _timeProvider = timeProvider;
+    }
 
     public PriceBreakdown Calculate(Customer customer, Vehicle vehicle, BookingRequest request)
     {
@@ -74,7 +80,8 @@ public class PricingService
         var promo = _promos.GetByCode(code)
             ?? throw new InvalidPromoCodeException($"Promo code '{code}' does not exist");
 
-        if (DateTime.Today < promo.ValidFrom || DateTime.Today > promo.ValidUntil)
+        var today = _timeProvider.GetLocalNow().Date;
+        if (today < promo.ValidFrom || today > promo.ValidUntil)
             throw new InvalidPromoCodeException($"Promo code '{code}' has expired");
 
         if (days < promo.MinDays)

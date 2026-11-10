@@ -10,3 +10,5 @@ Group / ID: G4
 |---|---|---|---|---|
 | CancellationService | 25, 33 | DateTime.Now | وقت الاختبار بيتغير ومش بقدر اتحكم في حدود وقت الالغاء | مررت TimeProvider في constructor واستخدمته بدل الوقت المباشر |
 | ReturnService | 37 | DateTime.Now | وقت الارجاع وحساب التأخير بيتغيروا حسب وقت التشغيل | مررت TimeProvider في constructor واستخدمته لتحديد وقت الارجاع ومررت TimeProvider.System من ConsoleApp |
+| PricingService | 77 | DateTime.Today | صلاحية كود الخصم بتعتمد على تاريخ الجهاز ومش بقدر اثبته في الاختبار | مررت TimeProvider في constructor واستخدمت التاريخ المحلي منه بدل DateTime.Today |
+| BookingService | 18 | انشاء PricingService داخل الكلاس | مش بقدر امرر خدمة تسعير بساعه متحكم فيها | مررت PricingService في constructor وربطتها من ConsoleApp |

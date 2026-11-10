@@ -15,10 +15,15 @@ public class BookingService
     readonly VehicleRepository _vehicles = new();
     readonly BookingRepository _bookings = new();
     readonly PromoCodeRepository _promos = new();
-    readonly PricingService _pricing = new();
+    readonly PricingService _pricing;
     readonly PaymentGateway _payments = new();
     readonly SmsSender _sms = new();
     readonly EmailSender _email = new();
+
+    public BookingService(PricingService pricing)
+    {
+        _pricing = pricing;
+    }
 
     public Booking CreateBooking(BookingRequest request)
     {
