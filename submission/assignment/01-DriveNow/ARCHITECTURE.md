@@ -70,3 +70,7 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Booking repository
 
 حطيت IBookingRepository في DriveNow.Domain.Interfaces لانه عقد تخزين واسترجاع كيان Booking التنفيذ فضل في Infrastructure.Repositories وخدمات الحجز والارجاع والالغاء بتستقبل الواجهه من ConsoleApp كده اقدر ابدل مستودع الحجوزات في الاختبار من غير اعتماد على تنفيذه الحقيقي
+
+## Task 4 — Vehicle repository
+
+حطيت IVehicleRepository في DriveNow.Domain.Interfaces لانه عقد للوصول لكيان Vehicle وتحديثه التنفيذ فضل في Infrastructure.Repositories وخدمات الحجز والارجاع والالغاء بتستقبل الواجهه من ConsoleApp كده اقدر ابدل بيانات السيارات في الاختبار من غير تغيير الخدمات

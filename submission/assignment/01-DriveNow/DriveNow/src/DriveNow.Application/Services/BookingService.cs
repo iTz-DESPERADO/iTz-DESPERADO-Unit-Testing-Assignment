@@ -15,7 +15,7 @@ public class BookingService
     readonly TimeProvider _timeProvider;
     readonly IBookingReferenceGenerator _referenceGenerator;
     readonly CustomerRepo _customers = new();
-    readonly VehicleRepository _vehicles = new();
+    readonly IVehicleRepository _vehicles;
     readonly IBookingRepository _bookings;
     readonly IPromoCodeRepository _promos;
     readonly PricingService _pricing;
@@ -25,13 +25,14 @@ public class BookingService
 
     public BookingService(PricingService pricing, TimeProvider timeProvider,
         IBookingReferenceGenerator referenceGenerator, IPromoCodeRepository promos,
-        IBookingRepository bookings)
+        IBookingRepository bookings, IVehicleRepository vehicles)
     {
         _pricing = pricing;
         _timeProvider = timeProvider;
         _referenceGenerator = referenceGenerator;
         _promos = promos;
         _bookings = bookings;
+        _vehicles = vehicles;
     }
 
     public Booking CreateBooking(BookingRequest request)

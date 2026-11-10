@@ -15,15 +15,17 @@ public class ReturnService
 {
     readonly TimeProvider _timeProvider;
     readonly IBookingRepository _bookings;
-    readonly VehicleRepository _vehicles = new();
+    readonly IVehicleRepository _vehicles;
     readonly CustomerRepo _customers = new();
     readonly PaymentGateway _payments = new();
     readonly EmailSender _email = new();
 
-    public ReturnService(TimeProvider timeProvider, IBookingRepository bookings)
+    public ReturnService(TimeProvider timeProvider, IBookingRepository bookings,
+        IVehicleRepository vehicles)
     {
         _timeProvider = timeProvider;
         _bookings = bookings;
+        _vehicles = vehicles;
     }
 
     public ReturnReport ProcessReturn(int bookingId, int endMileage, int fuelQuarters, decimal damageCost)
