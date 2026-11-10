@@ -6,24 +6,26 @@ public class PaymentGateway : IPaymentGateway
 {
     readonly Random _random;
     readonly Action<TimeSpan> _delay;
+    readonly TextWriter _output;
 
-    public PaymentGateway(Random random, Action<TimeSpan> delay)
+    public PaymentGateway(Random random, Action<TimeSpan> delay, TextWriter output)
     {
         _random = random;
         _delay = delay;
+        _output = output;
     }
 
     public string Charge(int customerId, decimal amount, string description)
     {
         PauseAndMaybeFail();
-        Console.WriteLine($"[Payment] Charged {amount:N2} EGP to customer #{customerId}");
+        _output.WriteLine($"[Payment] Charged {amount:N2} EGP to customer #{customerId}");
         return "PAY-" + RandomCode();
     }
 
     public void Refund(int customerId, decimal amount, string description)
     {
         PauseAndMaybeFail();
-        Console.WriteLine($"[Payment] Refunded {amount:N2} EGP to customer #{customerId}");
+        _output.WriteLine($"[Payment] Refunded {amount:N2} EGP to customer #{customerId}");
     }
 
     void PauseAndMaybeFail()

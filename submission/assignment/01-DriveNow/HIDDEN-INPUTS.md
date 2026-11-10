@@ -31,3 +31,4 @@ Group / ID: G4
 | BookingReferenceGeneratorService | 10 | new Random داخل Generate | مش بقدر اتحكم في العشوائيه لما اختبر تنفيذ المولد نفسه | مررت Random في constructor وConsoleApp بينشئه في الاختبار اقدر امرره  |
 | PaymentGateway | 21, 28–31 | new Random لفشل الدفع ومرجع العمليه | مش بقدر اتحكم في نجاح الدفع وفشله او مرجع العمليه عند اختبار التنفيذ | مررت Random في constructor من ConsoleApp واستخدمته في المكانين الانتظار والطباعة لسه موجودين في التنفيذ الحقيقي |
 | PaymentGateway / SmsSender | 25 / 7  | Thread.Sleep لمدة 1500ms و500ms | الاختبارات بتضيع وقت في انتظار فعلي | مررت Action<TimeSpan> للانتظار. ConsoleApp يمرر Thread.Sleep والاختبارات تقدر تمرر دالة بدون انتظار |
+| PaymentGateway / SmsSender | Console.WriteLine | مخرجات مباشرة على Console بتخلي التقاطها والتحقق منها صعب في الاختبار | مررت TextWriter. ConsoleApp يمرر Console.Out والاختبار يقدر يستخدم StringWriter |

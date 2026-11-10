@@ -131,3 +131,7 @@ PaymentGateway بقى يستقبل Random من ConsoleApp بدل انشائه د
 ## Task 4 — Payment and SMS delays
 
 فصلت Thread.Sleep من PaymentGateway وSmsSender بتمرير Action<TimeSpan>. ConsoleApp لسه بينتظر نفس 1500ms للدفع و500ms للرساله والاختبارات تقدر تلغي الانتظار
+
+## Task 4 — Payment and SMS output
+
+مررت TextWriter لـ PaymentGateway وSmsSender بدل الكتابه المباشره على Console. ConsoleApp بيمرر Console.Out فالمخرجات تفضل بنفس النص والاختبار يقدر يستخدم StringWriter
