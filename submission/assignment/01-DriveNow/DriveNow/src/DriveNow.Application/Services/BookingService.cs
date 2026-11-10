@@ -19,13 +19,13 @@ public class BookingService
     readonly IPromoCodeRepository _promos;
     readonly PricingService _pricing;
     readonly IPaymentGateway _payments;
-    readonly SmsSender _sms = new();
+    readonly ISmsSender _sms;
     readonly EmailSender _email = new();
 
     public BookingService(PricingService pricing, TimeProvider timeProvider,
         IBookingReferenceGenerator referenceGenerator, IPromoCodeRepository promos,
         IBookingRepository bookings, IVehicleRepository vehicles, ICustomerRepository customers,
-        IPaymentGateway payments)
+        IPaymentGateway payments, ISmsSender sms)
     {
         _pricing = pricing;
         _timeProvider = timeProvider;
@@ -35,6 +35,7 @@ public class BookingService
         _vehicles = vehicles;
         _customers = customers;
         _payments = payments;
+        _sms = sms;
     }
 
     public Booking CreateBooking(BookingRequest request)

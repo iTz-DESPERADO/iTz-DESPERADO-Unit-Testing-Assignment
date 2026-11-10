@@ -1,6 +1,8 @@
+using DriveNow.Domain.Interfaces;
+
 namespace DriveNow.Infrastructure.External;
 
-public class SmsSender
+public class SmsSender : ISmsSender
 {
     public void Send(string phone, string text)
     {

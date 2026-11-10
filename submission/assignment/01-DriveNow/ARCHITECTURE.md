@@ -82,3 +82,9 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 ## Task 4 — Payment gateway
 
 حطيت IPaymentGateway في DriveNow.Domain.Interfaces كعقد لعمليات التحصيل والاسترداد من غير تفاصيل بوابة الدفع. Application وInfrastructure بيعتمدوا على العقد في Domain، والتنفيذ فضل في Infrastructure.External. ConsoleApp بيمرره لخدمات الحجز والارجاع والالغاء، وفي الاختبار اقدر اتحكم في نجاح الدفع وفشله بدون انتظار او دفع حقيقي. باقي الاعتماديات الخارجيه لسه هتتفصل.
+
+## Task 4 — SMS sender
+
+حطيت ISmsSender في DriveNow.Domain.Interfaces كعقد بسيط لارسال الرسائل بدون تفاصيل التنفيذ Application وInfrastructure بيعتمدوا على العقد والتنفيذ فضل في Infrastructure.External
+
+ ConsoleApp بيمرره للحجز والالغاء وفي الاختبار اقدر اتحقق من رقم العميل ونص الرساله من غير تشغيل SmsSender الحقيقي

@@ -20,11 +20,12 @@ internal static class Program
     static readonly BookingRepository Bookings = new();
     static readonly PromoCodeRepository Promos = new();
     static readonly PaymentGateway Payments = new();
+    static readonly SmsSender Sms = new();
     static readonly PricingService Pricing = new(TimeProvider.System, Promos);
     static readonly BookingService BookingService = new(
-        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles, Customers, Payments);
+        Pricing, TimeProvider.System, new BookingReferenceGeneratorService(), Promos, Bookings, Vehicles, Customers, Payments, Sms);
     static readonly ReturnService ReturnService = new(TimeProvider.System, Bookings, Vehicles, Customers, Payments);
-    static readonly CancellationService CancellationService = new(TimeProvider.System, Promos, Bookings, Vehicles, Customers, Payments);
+    static readonly CancellationService CancellationService = new(TimeProvider.System, Promos, Bookings, Vehicles, Customers, Payments, Sms);
 
     static void Main()
     {

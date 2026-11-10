@@ -14,12 +14,12 @@ public class CancellationService
     readonly ICustomerRepository _customers;
     readonly IPromoCodeRepository _promos;
     readonly IPaymentGateway _payments;
-    readonly SmsSender _sms = new();
+    readonly ISmsSender _sms;
     readonly EmailSender _email = new();
 
     public CancellationService(TimeProvider timeProvider, IPromoCodeRepository promos,
         IBookingRepository bookings, IVehicleRepository vehicles, ICustomerRepository customers,
-        IPaymentGateway payments)
+        IPaymentGateway payments, ISmsSender sms)
     {
         _timeProvider = timeProvider;
         _promos = promos;
@@ -27,6 +27,7 @@ public class CancellationService
         _vehicles = vehicles;
         _customers = customers;
         _payments = payments;
+        _sms = sms;
     }
 
     public decimal Cancel(int bookingId)
