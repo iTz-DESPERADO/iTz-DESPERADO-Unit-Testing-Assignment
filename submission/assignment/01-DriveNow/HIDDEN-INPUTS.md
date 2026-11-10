@@ -14,3 +14,4 @@ Group / ID: G4
 | BookingService | 18 | انشاء PricingService داخل الكلاس | مش بقدر امرر خدمة تسعير بساعه متحكم فيها | مررت PricingService في constructor وربطتها من ConsoleApp |
 | BookingService | 56, 89, 125 | DateTime.Now | وقت انشاء الحجز وشروط الاستلام وبدء الايجار بتعتمد على وقت الجهاز | مررت TimeProvider في constructor واستخدمت الوقت المحلي منه في الثلاث اماكن وربطته من ConsoleApp |
 | BookingService | 58, 150–159  | RandomCode وتوليد مرجع عشوائي | مرجع الحجز بيتغير في كل تشغيل ومش بقدر اثبته في الاختبار | مررت IBookingReferenceGenerator في constructor ونقلت التنفيذ العشوائي لـ BookingReferenceGeneratorService وربطته من ConsoleApp |
+| PricingService | 13  | انشاء PromoCodeRepository داخل الكلاس | مش بقدر اتحكم في بيانات اكواد الخصم بدون المخزن الحقيقي | مررت IPromoCodeRepository في constructor وربطت التنفيذ من ConsoleApp المخزن static لسه هيتعدل في خطوه لاحقه |

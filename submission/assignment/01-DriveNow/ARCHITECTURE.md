@@ -58,3 +58,9 @@ Failed!  - Failed:     4, Passed:    11, Skipped:     0, Total:    15, Duration:
 
 حطيت IBookingReferenceGenerator في DriveNow.Domain.Interfaces لانه عقد لتوليد مرجع الحجز والتنفيذ العشوائي في DriveNow.Infrastructure.Services كده Application وInfrastructure بيعتمدوا على عقد في Domain من غير ما Domain يعتمد عليهم
  ConsoleApp بيربط التنفيذ بخدمة الحجز وفي الاختبار اقدر امرر مولد بيرجع مرجع ثابت
+
+## Task 4 — Promo code repository
+
+حطيت IPromoCodeRepository في DriveNow.Domain.Interfaces لانه عقد للوصول لكيان PromoCode الموجود في Domain
+
+ التنفيذ فضل في Infrastructure.Repositories وPricingService بقى يعتمد على الواجهه بدل التنفيذ ConsoleApp بيمرر المستودع للخدمه كده التسعير ما بقاش مرتبط بـ Infrastructure 

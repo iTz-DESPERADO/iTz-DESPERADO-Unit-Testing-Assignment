@@ -4,18 +4,19 @@ using DriveNow.Domain.Enums;
 using DriveNow.Domain.Exceptions;
 using DriveNow.Domain.Services;
 using DriveNow.Domain.ValueObjects;
-using DriveNow.Infrastructure.Repositories;
+using DriveNow.Domain.Interfaces;
 
 namespace DriveNow.Application.Services;
 
 public class PricingService
 {
     readonly TimeProvider _timeProvider;
-    readonly PromoCodeRepository _promos = new();
+    readonly IPromoCodeRepository _promos;
 
-    public PricingService(TimeProvider timeProvider)
+    public PricingService(TimeProvider timeProvider, IPromoCodeRepository promos)
     {
         _timeProvider = timeProvider;
+        _promos = promos;
     }
 
     public PriceBreakdown Calculate(Customer customer, Vehicle vehicle, BookingRequest request)
