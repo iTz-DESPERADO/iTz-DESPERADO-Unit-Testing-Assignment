@@ -113,3 +113,49 @@ Group / ID: G4
 اقتراحاته عن حساب اكتر من يوم وحدود ساعه السماح بعد يومين كانت ناقصه عندي وقبلتها علشان اتأكد ان الحساب صحيح مع مدد مختلفه
 
 وكمان راجعت كلامه عن الثانيه الواحده وهو قال انها اقل مده موجبه على مستوى دقه الثواني وده صحيح بس مش اقل مده بيدعمها DateTime لانه بيدعم ticks اقل من الثانيه
+
+## Task 5 — PricingService
+
+| Rule | Tests | Boundaries I covered 
+|---|---|---|
+| BR-30 | `Calculate_RentalDuration_ReturnsCorrectDaysAndBaseAmount`, `Calculate_InvalidRentalSpan_ThrowsArgumentException`, `Calculate_BogusRandomName_DoesNotChangeBaseAmount` | جربت مدة اقل من يوم و25h و25h 1m، وكمان مدة غير صحيحة |
+| BR-31 | `Calculate_WeekendDayStarts_ReturnsCorrectWeekendSurcharge` | جربت بداية الايجار يوم الخميس والجمعة والسبت |
+| BR-32 | `Calculate_DriverAge_ReturnsCorrectYoungDriverSurcharge`, `Calculate_BogusFixedAge_ReturnsExpectedYoungSurcharge` | اختبرت عمر 21 و25 وكمان عمر 23 باستخدام Bogus |
+| BR-33 | `Calculate_RentalDays_ReturnsCorrectDurationDiscount` | اختبرت 7 و14 يوم |
+| BR-34 | `Calculate_LoyaltyTier_ReturnsCorrectLoyaltyDiscount` | غطيت مستويات None وSilver وGold وPlatinum 
+| BR-35 | `Calculate_PromoPercent_ReturnsPercentageOfBase`, `Calculate_ValidPromo_ReturnsPercentOfBase` | جربت نسب 5% و15%، وتاكدت من التعامل مع اختلاف الحروف في كود الخصم |
+| BR-36 | `Calculate_PromoValidation_ReturnsExpectedOutcome` | اختبرت الكود المفقود، promo صالحة، promo منتهية، الحد الادنى للايام، وفئة غير مسموحة |
+| BR-37 | `Calculate_DiscountCap_ReturnsCorrectPromoDiscount` | جربت Promo لوحدها وحالة تجمع خصم المدة والولاء مع Promo |
+| BR-38 | `Calculate_InsurancePlanAndCategory_ReturnsCorrectInsuranceCost` | جربت Basic وStandard مع Economy وPremium مع Luxury |
+| BR-39 | `Calculate_AdditionalDriversAndTier_ReturnsCorrectDriverCost` | اختبرت صفر وسائق اضافي، وGold مع اول سائق مجاني ومع سائقين |
+| BR-40 | `Calculate_WorkedExample_ReturnsWholePriceBreakdown`, `Calculate_WorkedExample_SnapshotMatchesApproved` | استخدمت مثالين كاملين مع `MemberData` وVerify
+
+**think these are enough because**
+
+ لان الاختبارات الحالية بتغطي كل القواعد في شكلها الاساسي خصوصا حدود الخصومات ورسوم السائقين والتامين
+
+لكن مش شايف ان التغطية كاملة 100% انا غالبا بنسى boundary cases مثلا ما جربتش الايجار اللي يعدي على ويك اندين او بداية الايجار بعد منتصف الليل او لما `AllowedCategories` تكون `null` او لما اكثر من خصم ياثر على نفس السعر
+
+كمان اختبار القاعده لوحدها شيء واختبارها مع قواعد ثانيه شيء مختلف علشان كده حاسس ان بعض التركيبات محتاجة اختبار اضافي
+
+### R4 — Bogus and FIRST
+
+استخدمت **Fixed Seed** مع Bogus علشان البيانات ما تتغيرش كل مرة اشغل فيها الاختبارات لو اختبار فشل اقدر اعيده بنفس البيانات واعرف المشكلة من غير ما العشوائية تغير النتيجة
+
+في اختبار `Calculate_BogusRandomName_DoesNotChangeBaseAmount` استخدمت اسم عشوائي لان اسم العميل اصلا مش المفروض ياثر على حساب السعر
+
+لكن في `Calculate_BogusFixedAge_ReturnsExpectedYoungSurcharge` خليت العمر ثابت على 23 سنة لان لو العمر اتغير عشوائيا ممكن تتغير رسوم السائق الشاب وساعتها الاختبار يبقى غير ثابت
+
+### R5 — FluentAssertions
+
+في اختبار `Calculate_WorkedExample_ReturnsWholePriceBreakdown` استخدمت `BeEquivalentTo` بدل ما اقارن كل Property لوحدها لان المطلوب هنا التاكد من نتيجة `PriceBreakdown` كاملة
+
+واستخدمت `AssertionScope` علشان لو فيه اكثر من قيمة غلط اقدر اشوف الاختلافات مع بعض بدل ما الاختبار يقف عند اول Assertion
+
+### R6 — Verify vs Assertions
+
+شايف ان كل طريقة مناسبة لنوع معين من الاختبارات
+
+الـ **Assertions العادية** اوضح لما اكون باختبر Rule محددة زي خصم الولاء او تكلفة التأمين لان الاختبار بيبين بالضبط ايه القيمة اللي متوقعها
+
+اما **Verify** فهو مناسب اكثر للامثلة الكاملة لان `PriceBreakdown` فيها حقول كثيره والـ Snapshot بتساعدني الاحظ لو اي قيمة اتغيرت

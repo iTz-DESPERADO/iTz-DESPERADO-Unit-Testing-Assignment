@@ -7,6 +7,10 @@ Group / ID: G4
 |---|---|---|---|---|---|
 | 1 | BR-03 | CalculateRentalDays_WithinGracePeriod_ReturnsOneDay — مدة 25 ساعه بالظبط | 1 day | 2 days | لم يتم الاصلاح بعد |
 | 1 (حاله اضافيه بعد مراجعة AI) | BR-03 | CalculateRentalDays_GracePeriodAfterTwoDays_ReturnsCorrectDays — مدة 49 ساعه بالظبط | 2 days | 3 days | لم يتم الاصلاح بعد |
+| 2 | BR-30 | Calculate_RentalDuration_ReturnsCorrectDaysAndBaseAmount — مدة 25 ساعه بالظبط | 1 day, 600 base amount | 2 days | لم يتم الاصلاح بعد |
+| 3 | BR-33 | Calculate_RentalDays_ReturnsCorrectDurationDiscount — 7 ايام | 420 | 0 | لم يتم الاصلاح بعد |
+| 4 | BR-37 | Calculate_DiscountCap_ReturnsCorrectPromoDiscount — 7 ايام مع Gold وPromo 15% | 210 | 630 | لم يتم الاصلاح بعد |
+| 5 | BR-39 | Calculate_WorkedExample_ReturnsWholePriceBreakdown — Example B مع Silver وسائق اضافي | 700 | 0 | لم يتم الاصلاح بعد |
 
 لما شغلت الاختبارات لقيت ان مدة 25 ساعه بالظبط بتتحسب يومين مع ان القاعده بتقول ان ساعه السماح ما بتضيف يوم الا لما نزيد عن 60 دقيقه
 
@@ -33,4 +37,51 @@ Expected result to be 1, but found 2.
 ```text
 Expected result to be 2, but found 3.
 ```
+
+### BR-30
+
+لما شغلت اختبار مدة الايجار في `PricingService` لقيت ان مدة 25 ساعه بالظبط رجعت يومين بدل يوم واحد حسب القاعدة الاختبار وقف عند فحص `RentalDays` لذلك فحص `BaseAmount` ما وصل له وطبعا هدا bug يتبع ال tests القديمه  لانه بيعتمد في حسابه علي RentalMathService
+
+رساله الفشل
+
+```text
+Expected result.RentalDays to be 1, but found 2.
+```
+
+### BR-33
+
+لما شغلت اختبار خصم المدة لقيت ان 7 ايام رجعت من غير خصم مع ان القاعدة بتقول من 7 الى 13 يوم الخصم 10% المتوقع 420 من BaseAmount قيمته 4200 لكن الكود رجع 0
+
+السبب ان الشرط في `PricingService` مكتوب `days > 7` وده بيبدأ الخصم من 8 ايام بدل 7 ايام
+
+رساله الفشل
+
+```text
+Expected price.DurationDiscount to be 420M, but found 0M.
+```
+
+### BR-37
+
+لما جربت 7 ايام مع Gold وPromo 15% المتوقع PromoDiscount يكون 210 لان خصم المدة 10% وخصم الولاء 10% فيفضل 5% فقط قبل حد 25% الكود رجع 630 يعني حسب Promo 15% كامل
+
+الخطأ هنا ان `PricingService` ما بيطبقش حد 25% على خصم الـPromo وفشل BR-33 عند 7 ايام ظاهر في نفس الحالة كمان لكنه مسجل فوق كـ bug منفصل
+
+رساله الفشل
+
+```text
+Expected price.PromoDiscount to be 210M, but found 630M.
+```
+
+### BR-39
+
+في Example B العميل Silver وعنده سائق اضافي المتوقع تكلفة السائق تكون 700 لمدة 7 ايام لان المجاني مطلوب لـGold وPlatinum فقط لكن الكود رجع 0
+
+السبب ان `DriverCost` بيستخدم `tier >= LoyaltyTier.Silver` فبيعطي Silver السائق المجاني مع انه مش موجود في القاعدة
+
+رساله الفشل من مثال BR-40 الكامل
+
+```text
+Expected property actual.AdditionalDriversCost to be 700M, but found 0M.
+```
+
 
