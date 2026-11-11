@@ -16,8 +16,15 @@ public class PricingRentalAndSnapshotTests
 {
     [Theory]
     [InlineData(0, 180, 1, 600)]
+    // AI suggestion: exact full-day and just-inside grace-period boundaries.
+    [InlineData(1, 0, 1, 600)]
+    [InlineData(1, 59, 1, 600)]
     [InlineData(1, 60, 1, 600)]
     [InlineData(1, 61, 2, 1200)]
+    // AI suggestion: verify full-day counting beyond the first day.
+    [InlineData(2, 0, 2, 1200)]
+    [InlineData(2, 60, 2, 1200)]
+    [InlineData(2, 61, 3, 1800)]
     [Trait("Rule", "BR-30")]
     public void Calculate_RentalDuration_ReturnsCorrectDaysAndBaseAmount(int days, int extraMinutes, int expectedDays, int expectedBase)
     {

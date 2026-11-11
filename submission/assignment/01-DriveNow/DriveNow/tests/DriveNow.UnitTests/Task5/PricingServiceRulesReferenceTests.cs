@@ -19,6 +19,12 @@ public class PricingServiceRulesReferenceTests
     [InlineData("2026-11-12", 1, 0)]     // Thursday
     [InlineData("2026-11-13", 1, 120)]   // Friday
     [InlineData("2026-11-14", 1, 120)]   // Saturday
+    // AI suggestion: non-weekend day and rental days that reach a weekend.
+    [InlineData("2026-11-15", 1, 0)]     // Sunday
+    [InlineData("2026-11-12", 2, 120)]   // Thursday + Friday
+    [InlineData("2026-11-13", 2, 240)]   // Friday + Saturday
+    [InlineData("2026-11-14", 2, 120)]   // Saturday + Sunday
+    [InlineData("2026-11-12", 10, 480)]  // Two weekends
     [Trait("Rule", "BR-31")]
     public void Calculate_WeekendDayStarts_ReturnsCorrectWeekendSurcharge(string pickupDate, int days, int expected)
     {
@@ -37,8 +43,32 @@ public class PricingServiceRulesReferenceTests
     }
 
     [Theory]
+    // AI suggestion: an extra rental day from BR-03 can start on a weekend day.
+    [InlineData("2026-11-12", 25, 1, 120)] // Thursday + 25h 1m: Friday is day two
+    [InlineData("2026-11-13", 25, 1, 240)] // Friday + 25h 1m: Friday and Saturday
+    public void Calculate_GracePeriodExtraDay_ReturnsCorrectWeekendSurcharge(
+        string pickupDate, int hours, int minutes, decimal expected)
+    {
+        // Arrange
+        var pickup = DateTime.ParseExact(pickupDate, "yyyy-MM-dd", CultureInfo.InvariantCulture).AddHours(10);
+        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
+        var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
+        var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddHours(hours).AddMinutes(minutes), InsurancePlan = InsurancePlan.Basic };
+
+        // Act
+        var price = pricing.Calculate(customer, vehicle, request);
+
+        // Assert
+        price.WeekendSurcharge.Should().Be(expected);
+    }
+
+    [Theory]
     [InlineData(21, 90)]
     [InlineData(25, 0)]
+    // AI suggestion: both remaining young-driver age boundaries.
+    [InlineData(20, 0)]
+    [InlineData(24, 90)]
     [Trait("Rule", "BR-32")]
     public void Calculate_DriverAge_ReturnsCorrectYoungDriverSurcharge(int age, int expected)
     {
@@ -57,8 +87,33 @@ public class PricingServiceRulesReferenceTests
     }
 
     [Theory]
+    // AI suggestion: age is calculated on pickup, including a birthday on pickup or during the rental.
+    [InlineData("2005-11-08", 1, 90)] // Turns 21 on pickup
+    [InlineData("2005-11-09", 2, 0)]  // Turns 21 during the rental
+    [Trait("Rule", "BR-32")]
+    public void Calculate_DriverBirthday_ReturnsSurchargeFromPickupAge(string birthDate, int rentalDays, decimal expected)
+    {
+        // Arrange
+        var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
+        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var customer = new Customer { DateOfBirth = DateTime.ParseExact(birthDate, "yyyy-MM-dd", CultureInfo.InvariantCulture), LoyaltyTier = LoyaltyTier.None };
+        var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
+        var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(rentalDays), InsurancePlan = InsurancePlan.Basic };
+
+        // Act
+        var price = pricing.Calculate(customer, vehicle, request);
+
+        // Assert
+        price.YoungDriverSurcharge.Should().Be(expected);
+    }
+
+    [Theory]
     [InlineData(7, 420)]
     [InlineData(14, 1260)]
+    // AI suggestion: values immediately before the 7-day and 14-day thresholds.
+    [InlineData(6, 0)]
+    [InlineData(13, 780)]
+    [InlineData(15, 1350)]
     [Trait("Rule", "BR-33")]
     public void Calculate_RentalDays_ReturnsCorrectDurationDiscount(int days, int expected)
     {
@@ -102,6 +157,10 @@ public class PricingServiceRulesReferenceTests
     [InlineData(InsurancePlan.Basic, VehicleCategory.Economy, 0)]
     [InlineData(InsurancePlan.Standard, VehicleCategory.Economy, 150)]
     [InlineData(InsurancePlan.Premium, VehicleCategory.Luxury, 600)]
+    // AI suggestion: remaining insurance plans and the Luxury multiplier.
+    [InlineData(InsurancePlan.Basic, VehicleCategory.Luxury, 0)]
+    [InlineData(InsurancePlan.Standard, VehicleCategory.Luxury, 300)]
+    [InlineData(InsurancePlan.Premium, VehicleCategory.Economy, 300)]
     [Trait("Rule", "BR-38")]
     public void Calculate_InsurancePlanAndCategory_ReturnsCorrectInsuranceCost(InsurancePlan plan, VehicleCategory category, int expected)
     {
@@ -119,11 +178,34 @@ public class PricingServiceRulesReferenceTests
         price.InsuranceCost.Should().Be(expected);
     }
 
+    [Fact]
+    [Trait("Rule", "BR-38")]
+    public void Calculate_PremiumLuxuryForThreeDays_ReturnsCorrectInsuranceCost()
+    {
+        // Arrange
+        var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
+        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
+        var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Luxury };
+        // AI suggestion: insurance cost must also scale with rental days.
+        var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(3), InsurancePlan = InsurancePlan.Premium };
+
+        // Act
+        var price = pricing.Calculate(customer, vehicle, request);
+
+        // Assert
+        price.InsuranceCost.Should().Be(1800m);
+    }
+
     [Theory]
     [InlineData(LoyaltyTier.None, 0, 0)]
     [InlineData(LoyaltyTier.None, 1, 100)]
     [InlineData(LoyaltyTier.Gold, 1, 0)]
     [InlineData(LoyaltyTier.Gold, 2, 100)]
+    // AI suggestion: Silver is paid, Platinum receives the first free driver.
+    [InlineData(LoyaltyTier.Silver, 1, 100)]
+    [InlineData(LoyaltyTier.Platinum, 1, 0)]
+    [InlineData(LoyaltyTier.Platinum, 3, 200)]
     [Trait("Rule", "BR-39")]
     public void Calculate_AdditionalDriversAndTier_ReturnsCorrectDriverCost(LoyaltyTier tier, int drivers, int expected)
     {
@@ -141,9 +223,32 @@ public class PricingServiceRulesReferenceTests
         price.AdditionalDriversCost.Should().Be(expected);
     }
 
+    [Fact]
+    [Trait("Rule", "BR-39")]
+    public void Calculate_AdditionalDriversForMultipleDays_ReturnsCorrectDriverCost()
+    {
+        // Arrange
+        var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
+        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.Gold };
+        var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
+        // AI suggestion: the free driver is applied once, then cost scales with rental days.
+        var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(3), InsurancePlan = InsurancePlan.Basic, AdditionalDrivers = 2 };
+
+        // Act
+        var price = pricing.Calculate(customer, vehicle, request);
+
+        // Assert
+        price.AdditionalDriversCost.Should().Be(300m);
+    }
+
     [Theory]
     [InlineData(1, LoyaltyTier.None, 15)]   // promo only: 15%
     [InlineData(7, LoyaltyTier.Gold, 15)]   // 10% + 10% + 15% -> promo allowed 5%
+    // AI suggestion: exactly 25% and no remaining promo capacity.
+    [InlineData(7, LoyaltyTier.Silver, 10)]
+    [InlineData(14, LoyaltyTier.Gold, 5)]
+    [InlineData(7, LoyaltyTier.Silver, 5)]
     [Trait("Rule", "BR-37")]
     public void Calculate_DiscountCap_ReturnsCorrectPromoDiscount(int days, LoyaltyTier tier, int promoPercent)
     {
