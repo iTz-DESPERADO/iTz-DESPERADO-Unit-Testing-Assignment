@@ -11,6 +11,8 @@ Group / ID: G4
 | 3 | BR-33 | Calculate_RentalDays_ReturnsCorrectDurationDiscount — 7 ايام | 420 | 0 | لم يتم الاصلاح بعد |
 | 4 | BR-37 | Calculate_DiscountCap_ReturnsCorrectPromoDiscount — 7 ايام مع Gold وPromo 15% | 210 | 630 | لم يتم الاصلاح بعد |
 | 5 | BR-39 | Calculate_WorkedExample_ReturnsWholePriceBreakdown — Example B مع Silver وسائق اضافي | 700 | 0 | لم يتم الاصلاح بعد |
+| 6 | BR-16 | CreateBooking_LuxuryDriverIsExactlyTwentyFiveWithThreeLicenseYears_CreatesBooking | booking is created | BookingRejectedException | لم يتم الاصلاح بعد |
+| 7 | BR-21 | CreateBooking_PickupEqualsExistingReturn_CreatesBooking | booking is created | BookingRejectedException | لم يتم الاصلاح بعد |
 
 لما شغلت الاختبارات لقيت ان مدة 25 ساعه بالظبط بتتحسب يومين مع ان القاعده بتقول ان ساعه السماح ما بتضيف يوم الا لما نزيد عن 60 دقيقه
 
@@ -82,6 +84,30 @@ Expected price.PromoDiscount to be 210M, but found 630M.
 
 ```text
 Expected property actual.AdditionalDriversCost to be 700M, but found 0M.
+```
+
+### BR-16
+
+اختبرت Luxury مع عمر 25 سنة بالظبط ورخصة عمرها 3 سنوات القاعدة تقول age at least 25 لكن الكود رفض الحجز
+
+السبب ان الشرط في `BookingService` مكتوب `age > 25` بدل `age >= 25`
+
+رساله الفشل
+
+```text
+Luxury vehicles require age 25+ and 3 years of license
+```
+
+### BR-21
+
+اختبرت حجز جديد وقت استلامه يساوي وقت ارجاع الحجز الموجود. القاعدة تقول back-to-back مسموح لكن الكود رفضه كانه overlap
+
+السبب ان شرط overlap يستخدم `request.PickupAt <= existing.ReturnAt` و `request.ReturnAt >= existing.PickupAt` لازم تكون المقارنة strict علشان وقتين متساويين ما يتحسبوش overlap
+
+رساله الفشل
+
+```text
+Vehicle is already booked for these dates
 ```
 
 

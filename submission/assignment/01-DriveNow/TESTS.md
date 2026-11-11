@@ -186,3 +186,28 @@ Group / ID: G4
 هو قال ان BR-40 ما عندهاش اختبار صريح لكن ده مش صحيح عندي لان `Calculate_WorkedExample_ReturnsWholePriceBreakdown` بيقارن `PriceBreakdown` كاملة و`Calculate_WorkedExample_SnapshotMatchesApproved` بيعمل Verify. السبب انه ما شاف الاسماء دي لاني ارسلت له اختبارات القواعد فقط
 
 وبرضه كلامه عن تعارض BR-37 مع 14 يوم وPlatinum صحيح: النص بيقول الخصومات كلها ما تعديش 25% وفي نفس الوقت يقول نحافظ على مدة وولاء لكن الاتنين لوحدهم 30% علشان كده رفضت الحالة دي لحد ما يكون فيه نص صريح انه اعمل كده او لازم اراجع حضرتك في الموضوع
+
+## Task 6 — BookingService
+
+| Rule | Tests | اللي اختبرته |
+|---|---|---|
+| BR-10 | `CreateBooking_CustomerDoesNotExist_ThrowsCustomerNotFoundException` | customer مش موجود والرسالة |
+| BR-11 | `CreateBooking_CustomerIsBlacklisted_RejectsBooking` | blacklist |
+| BR-12 | `CreateBooking_DriverIsTwenty_RejectsBooking` و InlineAutoData للاعمار 20 و21 و25 | حد العمر |
+| BR-13 | `CreateBooking_LicenseIsLessThanOneYearOld_RejectsBooking` | قبل سنة من الرخصة |
+| BR-14 - BR-15 | vehicle مش موجود وvehicle مش available | التحقق من السيارة |
+| BR-16 - BR-17 | Luxury عند 25 ورخصة 3 سنوات وVan عند سنتين | حدود Luxury وVan |
+| BR-18 - BR-20 | pickup بعد ساعتين، rental period، وadditional drivers | حدود الوقت وعدد السائقين |
+| BR-21 - BR-22 | back-to-back و2 open bookings | overlap وعدد الحجوزات |
+| BR-23 - BR-25 | price وReserved وcreated time وmileage وreference | بيانات الحجز الجديد |
+| BR-26 | كل deposits وPremium وPlatinum بدون gateway | الدفع |
+| BR-27 | promo update وsave وSMS وemail وaudit | اجراءات بعد الحجز |
+
+### Self review - BookingService
+
+**think these are enough because**
+
+غطيّت كل BR من 10 الى 27 وحطيت الحدود المهمة زي 20 و21 و25 للعمر، ساعتين بالظبط، 30 يوم، 0 الى 3 سائقين، وback-to-back 
+
+لكن ممكن اكون نسيت combinations بين القواعد مثلا Luxury مع pickup boundary او promo مع payment failure
+

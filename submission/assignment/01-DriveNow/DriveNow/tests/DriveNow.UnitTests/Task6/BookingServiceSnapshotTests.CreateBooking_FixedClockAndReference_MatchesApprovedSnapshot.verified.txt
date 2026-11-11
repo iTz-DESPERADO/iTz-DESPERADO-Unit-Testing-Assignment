@@ -1,0 +1,15 @@
+﻿{
+  Reference: DN-20261112-SN01,
+  CustomerId: 10,
+  VehicleId: 20,
+  PickupAt: DateTime_1,
+  ReturnAt: DateTime_2,
+  Price: {
+    RentalDays: 1,
+    BaseAmount: 600.0,
+    Total: 600.00
+  },
+  Deposit: 1000.0,
+  CreatedAt: DateTime_3,
+  StartMileage: 1234
+}
