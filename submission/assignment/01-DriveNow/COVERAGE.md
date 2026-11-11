@@ -43,3 +43,23 @@ dotnet test DriveNow.sln --collect:"XPlat Code Coverage"
 
 
 احتفظت بارقام Baseline زي ما سجلتها وقتها. لاحظت ان تقرير LegacyTests الحالي لوحده مختلف عنها: Application فيه 34/401 سطر وDomain فيه 4/114 سطر. سبب الفرق محتاج مراجعة تقرير Baseline الاصلي ومش هغير الارقام القديمه من غير دليل
+
+## After Task 5
+
+قست التغطية بعد اختبارات PricingService. شغلت UnitTests و LegacyTests كل واحد لوحده ثم دمجت تقريري Cobertura في ReportGenerator.
+
+| After task | Project | Covered lines / Total | Line Coverage | Covered branches / Total | Branch Coverage |
+|---|---|---:|---:|---:|---:|
+| Task 5 | DriveNow.Application | 125 / 422 | 29.62% | 53 / 184 | 28.80% |
+| Task 5 | DriveNow.Domain | 65 / 114 | 57.02% | 12 / 18 | 66.67% |
+
+Commands from `DriveNow`:
+
+```powershell
+dotnet test tests/DriveNow.UnitTests/DriveNow.UnitTests.csproj --collect:"XPlat Code Coverage"
+dotnet test tests/DriveNow.LegacyTests/DriveNow.LegacyTests.csproj --collect:"XPlat Code Coverage"
+```
+
+UnitTests: 109 passed, 9 failed. LegacyTests: 5 passed, 0 failed الاخطاء الموجودة هي bugs معروفة ومسجلة في `BUGS.md` لكن تقرير التغطية يتولد حتى لو الاختبارات فشلت
+
+`PricingService` لوحده: 84 / 85 سطر (98.8%) و 47 / 48 فرع (97.9%). هذا لا يعني انه صحيح: الاختبارات ما زالت كاشفة اخطاء BR-03 وBR-33 وBR-37 وBR-39
