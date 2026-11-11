@@ -17,6 +17,16 @@ internal sealed class FixedReferenceGenerator(string reference) : IBookingRefere
     public string Generate(DateTime pickupAt) => reference;
 }
 
+internal sealed class SpyReferenceGenerator(string reference) : IBookingReferenceGenerator
+{
+    public List<DateTime> PickupDates { get; } = [];
+    public string Generate(DateTime pickupAt)
+    {
+        PickupDates.Add(pickupAt);
+        return reference;
+    }
+}
+
 internal sealed class FakeBookingRepository : IBookingRepository
 {
     public List<Booking> Items { get; } = [];
@@ -152,10 +162,11 @@ internal static class BookingTestFactory
         ISmsSender? sms = null,
         IEmailSender? email = null,
         IAuditLog? audit = null,
+        IBookingReferenceGenerator? referenceGenerator = null,
         string reference = "DN-20261112-AB12") => new(
         new PricingService(new FixedBookingTimeProvider(Now), promos ?? new StubPromoRepository()),
         new FixedBookingTimeProvider(Now),
-        new FixedReferenceGenerator(reference),
+        referenceGenerator ?? new FixedReferenceGenerator(reference),
         promos ?? new StubPromoRepository(),
         bookings ?? new FakeBookingRepository(),
         new StubVehicleRepository(vehicleExists ? vehicle ?? Vehicle() : null),

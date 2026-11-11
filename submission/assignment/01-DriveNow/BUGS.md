@@ -12,7 +12,7 @@ Group / ID: G4
 | 4 | BR-37 | Calculate_DiscountCap_ReturnsCorrectPromoDiscount — 7 ايام مع Gold وPromo 15% | 210 | 630 | لم يتم الاصلاح بعد |
 | 5 | BR-39 | Calculate_WorkedExample_ReturnsWholePriceBreakdown — Example B مع Silver وسائق اضافي | 700 | 0 | لم يتم الاصلاح بعد |
 | 6 | BR-16 | CreateBooking_LuxuryDriverIsExactlyTwentyFiveWithThreeLicenseYears_CreatesBooking | booking is created | BookingRejectedException | لم يتم الاصلاح بعد |
-| 7 | BR-21 | CreateBooking_PickupEqualsExistingReturn_CreatesBooking | booking is created | BookingRejectedException | لم يتم الاصلاح بعد |
+| 7 | BR-21 | CreateBooking_PickupEqualsExistingReturn_CreatesBooking و CreateBooking_ReturnEqualsExistingPickup_CreatesBooking | back-to-back booking is created | BookingRejectedException | لم يتم الاصلاح بعد |
 
 لما شغلت الاختبارات لقيت ان مدة 25 ساعه بالظبط بتتحسب يومين مع ان القاعده بتقول ان ساعه السماح ما بتضيف يوم الا لما نزيد عن 60 دقيقه
 
@@ -101,6 +101,8 @@ Luxury vehicles require age 25+ and 3 years of license
 ### BR-21
 
 اختبرت حجز جديد وقت استلامه يساوي وقت ارجاع الحجز الموجود. القاعدة تقول back-to-back مسموح لكن الكود رفضه كانه overlap
+
+بعد مراجعة AI ضفت الطرف الثاني برضه: وقت ارجاع الحجز الجديد يساوي وقت استلام الحجز الموجود فشل بنفس الرسالة ونفس السبب
 
 السبب ان شرط overlap يستخدم `request.PickupAt <= existing.ReturnAt` و `request.ReturnAt >= existing.PickupAt` لازم تكون المقارنة strict علشان وقتين متساويين ما يتحسبوش overlap
 

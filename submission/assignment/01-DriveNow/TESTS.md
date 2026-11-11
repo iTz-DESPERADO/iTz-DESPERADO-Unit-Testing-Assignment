@@ -211,3 +211,29 @@ Group / ID: G4
 
 لكن ممكن اكون نسيت combinations بين القواعد مثلا Luxury مع pickup boundary او promo مع payment failure
 
+### AI Suggestions Review — BookingService
+
+| AI Suggestion | Decision | Why |
+|---|---|---|
+| BR-10, BR-11, BR-14, BR-15 exact messages | Rejected | موجودة بالفعل في Assertions لكن الـ AI شاف اسماء الاختبارات فقط |
+| BR-12 يوم قبل 21 وBR-13 سنة رخصة بالظبط | Accepted | حدود مهمة كانت ناقصة بشكل واضح |
+| BR-16 age 24 وlicense سنتين كل واحد لوحده | Accepted | علشان اتاكد ان شروط Luxury مستقلة |
+| BR-17 Van مع سنة رخصة | Accepted | شرط Van مختلف عن شرط الرخصة العام |
+| BR-18 tick قبل ساعتين | Accepted | الحد قبل ساعتين ما كانش موجود |
+| BR-19 tick بعد pickup و30 يوم بالظبط | Accepted | علشان اراجع بداية ونهاية المدة بدقة |
+| BR-20 صفر و3 سائقين | Accepted | كنت مختبر -1 و4 فقط في الحد الغلط |
+| BR-21 كل overlap والطرف الثاني من back-to-back | Accepted | كان عندي طرف مسموح واحد فقط وما اختبرت overlap فعلي |
+| BR-22 حجز واحد وCompleted booking | Accepted | علشان اتاكد ان الحجوزات المقفولة ما تتحسبش |
+| BR-23 Verify ان PricingService اتنادى | Rejected | `PricingService` class ملموس وليس dependency قابلة للـmock والاختبار الحالي يتحقق من السعر الناتج |
+| BR-24 فصل كل property | Rejected | Status وCreatedAt وStartMileage موجودين فعلا في نفس الاختبار لانهم نتيجة نفس السلوك |
+| BR-25 تاريخ pickup مختلف عن created-at | Accepted | اضفته بـ SpyReferenceGenerator علشان اتاكد انه بيمرر pickup date |
+| BR-26 حالات deposit مختلفة | Rejected | موجودة بالفعل لكل الفئات مع Luxury Premium وPlatinum بدون gateway |
+| BR-27 side effects في نجاح promo | Rejected | موجودة بالفعل: promo وsave وSMS وemail وaudit |
+| BR-27 حجز مرفوض لا يعمل side effects | Accepted | حالة مهمة علشان promo ما تتستهلكش وما تبعتش confirmation غلط |
+
+#### Judge the AI — BookingService
+
+الـ AI افترض ان بعض الحاجات ناقصة لان الاسم وحده ما يثبتش الـ Assertions راجعت الكود ولقيت ان رسائل BR-10 الى BR-15 وdeposit combinations وside effects للحجز الناجح موجودة بالفعل فرفضتهم مش علشان الاقتراح غلط لكن علشان الكود مغطيهم
+
+قبلت الحدود وحالات overlap والحجوزات المقفولة وعدم وجود side effects للحجز المرفوض لانها كانت فعلا ناقصة بعد الاضافة ظهر نفس bug BR-21 في الطرفين المسموحين من back-to-back، وظهر bug BR-16 عند عمر 25 من قبل
+
