@@ -63,3 +63,16 @@ dotnet test tests/DriveNow.LegacyTests/DriveNow.LegacyTests.csproj --collect:"XP
 UnitTests: 109 passed, 9 failed. LegacyTests: 5 passed, 0 failed الاخطاء الموجودة هي bugs معروفة ومسجلة في `BUGS.md` لكن تقرير التغطية يتولد حتى لو الاختبارات فشلت
 
 `PricingService` لوحده: 84 / 85 سطر (98.8%) و 47 / 48 فرع (97.9%). هذا لا يعني انه صحيح: الاختبارات ما زالت كاشفة اخطاء BR-03 وBR-33 وBR-37 وBR-39
+
+## After Task 6
+
+قست التغطية بعد اختبارات BookingService وحالات مراجعة AI. شغلت UnitTests وLegacyTests ثم دمجت التقريرين في ReportGenerator.
+
+| After task | Project | Covered lines / Total | Line Coverage | Covered branches / Total | Branch Coverage |
+|---|---|---:|---:|---:|---:|
+| Task 6 | DriveNow.Application | 230 / 422 | 54.50% | 107 / 184 | 58.15% |
+| Task 6 | DriveNow.Domain | 89 / 114 | 78.07% | 12 / 18 | 66.67% |
+
+UnitTests في التقرير الكامل: 162 passed, 12 failed. LegacyTests: 5 passed, 0 failed. من 12 فشل، 3 تخص Task 6: BR-16 وعند طرفين من back-to-back في BR-21. الباقي bugs قديمة من Task 1 وTask 5 ومسجلة في `BUGS.md`.
+
+`BookingService` لوحده: 87 / 97 سطر (89.7%) التغطية زادت لكن ده مش معناه ان BR-16 وBR-21 صح لان الحالات الحدية كشفت اخطاء موجودة في الكود
