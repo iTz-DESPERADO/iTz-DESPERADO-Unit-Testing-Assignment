@@ -40,7 +40,12 @@ public class PricingService
 
         var durationDiscount = Round(baseAmount * durationPercent / 100m);
         var loyaltyDiscount = Round(baseAmount * loyaltyPercent / 100m);
-        var promoDiscount = PromoDiscount(request.PromoCode, days, vehicle.Category, baseAmount);
+        var promoDiscount = PromoDiscount(
+            request.PromoCode,
+            days,
+            vehicle.Category,
+            baseAmount,
+            durationPercent + loyaltyPercent);
         var insurance = InsuranceCost(request.InsurancePlan, vehicle.Category, days);
         var drivers = DriverCost(customer.LoyaltyTier, request.AdditionalDrivers, days);
         var total = Round(baseAmount + weekend + young - durationDiscount - loyaltyDiscount - promoDiscount + insurance + drivers);
@@ -73,7 +78,12 @@ public class PricingService
         return Round(dailyRate * 0.20m * weekendDays);
     }
 
-    decimal PromoDiscount(string? code, int days, VehicleCategory category, decimal baseAmount)
+    decimal PromoDiscount(
+        string? code,
+        int days,
+        VehicleCategory category,
+        decimal baseAmount,
+        decimal existingDiscountPercent)
     {
         if (code is null)
             return 0m;
@@ -94,7 +104,11 @@ public class PricingService
         if (promo.UsedCount >= promo.MaxUses)
             throw new InvalidPromoCodeException($"Promo code '{code}' has been fully used");
 
-        return Round(baseAmount * promo.DiscountPercent / 100m);
+        var allowedPromoPercent = Math.Min(
+            promo.DiscountPercent,
+            Math.Max(0m, 25m - existingDiscountPercent));
+
+        return Round(baseAmount * allowedPromoPercent / 100m);
     }
 
     static decimal InsuranceCost(InsurancePlan plan, VehicleCategory category, int days)
