@@ -11,4 +11,5 @@ Group / ID: G4
 | 4 | BR-39 | `Calculate_WorkedExample_ReturnsWholePriceBreakdown` - Example B, Silver, extra driver | 700 | 0 | `7f5cbc9` |
 | 5 | BR-16 | `CreateBooking_LuxuryDriverIsExactlyTwentyFiveWithThreeLicenseYears_CreatesBooking` | booking is created | `BookingRejectedException` | `487f190` |
 | 6 | BR-21 | `CreateBooking_PickupEqualsExistingReturn_CreatesBooking` and `CreateBooking_ReturnEqualsExistingPickup_CreatesBooking` | back-to-back booking is created | `BookingRejectedException` | `4a2a0c4` |
-| 7 | BR-41 | `ProcessReturn_LateMinutes_ReturnsCorrectLateFee` - 240 minutes | 240 EGP | 600 EGP | — |
+| 7 | BR-41 | `ProcessReturn_LateMinutes_ReturnsCorrectLateFee` - 240 minutes | 240 EGP | 600 EGP | `3bb944a` |
+| 8 | BR-51 | `Cancel_HoursUntilPickup_ReturnsCorrectFee` - 48 hours | 0 EGP | 300 EGP | — |
