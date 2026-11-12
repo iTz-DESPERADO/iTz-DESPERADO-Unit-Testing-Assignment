@@ -76,3 +76,15 @@ UnitTests: 109 passed, 9 failed. LegacyTests: 5 passed, 0 failed الاخطاء 
 UnitTests في التقرير الكامل: 162 passed, 12 failed. LegacyTests: 5 passed, 0 failed. من 12 فشل، 3 تخص Task 6: BR-16 وعند طرفين من back-to-back في BR-21. الباقي bugs قديمة من Task 1 وTask 5 ومسجلة في `BUGS.md`.
 
 `BookingService` لوحده: 87 / 97 سطر (89.7%) التغطية زادت لكن ده مش معناه ان BR-16 وBR-21 صح لان الحالات الحدية كشفت اخطاء موجودة في الكود
+
+## After Task 7
+
+قست التغطية بعد اختبارات pickup وreturn وcancellation وحالات مراجعة AI. شغلت UnitTests وLegacyTests ثم دمجت التقريرين في ReportGenerator.
+
+| After task | Project | Covered lines / Total | Line Coverage | Covered branches / Total | Branch Coverage |
+|---|---|---:|---:|---:|---:|
+| Task 7 | DriveNow.Application | 419 / 422 | 99.29% | 175 / 184 | 95.11% |
+| Task 7 | DriveNow.Domain | 112 / 114 | 98.25% | 16 / 18 | 88.89% |
+
+UnitTests في التقرير الكامل: 216 passed, 14 failed. LegacyTests: 5 passed, 0 failed. من 14 فشل، 2 تخص Task 7: BR-41 عند 240 دقيقة وBR-51 عند 48 ساعة. الباقي bugs قديمة ومسجلة في `BUGS.md`.
+
