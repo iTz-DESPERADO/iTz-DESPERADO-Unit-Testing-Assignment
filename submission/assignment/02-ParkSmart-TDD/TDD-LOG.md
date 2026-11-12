@@ -11,3 +11,4 @@ Group / ID: G4
 | `red(S1)` / `green(S1)` | `Calculate_JustAfterFifteenMinutes_IsNotFree` | Expected fee to be greater than `0m` but found `0m` | Added the 15-minute check and returned `1m` after the free period | None |
 | `red(S2)` / `green(S2)` | `Calculate_FirstStartedHour_ReturnsTen` | Expected fee to be `10m` but found `1m` | Changed the fee after the free period from `1m` to `10m` | None |
 | `red(S2)` / `green(S2)` | `Calculate_JustBeyondFirstHour_ReturnsTwenty` | Expected fee to be `20m` but found `10m` | Added the branch after the first hour and returned `20m` | None |
+| `red(S2)` / `green(S2)` | `Calculate_MultipleStartedHours_ReturnsCorrectFee` | Expected fee to be `40m` but found `20m` | Replaced the fixed fee with `Math.Ceiling` so each started hour costs `10m` | None |
