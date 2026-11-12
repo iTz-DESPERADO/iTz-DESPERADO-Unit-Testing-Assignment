@@ -13,6 +13,8 @@ Group / ID: G4
 | 5 | BR-39 | Calculate_WorkedExample_ReturnsWholePriceBreakdown — Example B مع Silver وسائق اضافي | 700 | 0 | لم يتم الاصلاح بعد |
 | 6 | BR-16 | CreateBooking_LuxuryDriverIsExactlyTwentyFiveWithThreeLicenseYears_CreatesBooking | booking is created | BookingRejectedException | لم يتم الاصلاح بعد |
 | 7 | BR-21 | CreateBooking_PickupEqualsExistingReturn_CreatesBooking و CreateBooking_ReturnEqualsExistingPickup_CreatesBooking | back-to-back booking is created | BookingRejectedException | لم يتم الاصلاح بعد |
+| 8 | BR-41 | ProcessReturn_LateMinutes_ReturnsCorrectLateFee — 240 minutes | 240 EGP | 600 EGP | لم يتم الاصلاح بعد |
+| 9 | BR-51 | Cancel_HoursUntilPickup_ReturnsCorrectFee — 48 hours | 0 EGP | 300 EGP | لم يتم الاصلاح بعد |
 
 لما شغلت الاختبارات لقيت ان مدة 25 ساعه بالظبط بتتحسب يومين مع ان القاعده بتقول ان ساعه السماح ما بتضيف يوم الا لما نزيد عن 60 دقيقه
 
@@ -110,6 +112,30 @@ Luxury vehicles require age 25+ and 3 years of license
 
 ```text
 Vehicle is already booked for these dates
+```
+
+### BR-41
+
+اختبرت 240 دقيقة تاخير بالضبط القاعدة تقول من 60 الى 240 دقيقة الحساب يكون 10% من daily rate لكل ساعة بدات يعني 4 ساعات مع daily rate 600 = 240
+
+الكود دخل حالة `lateMinutes >= 240` ورجع daily rate كامل 600 بدل ما يعتبر 240 ضمن الحالة الأولى
+
+رساله الفشل
+
+```text
+Expected report.LateFee to be 240M, but found 600M.
+```
+
+### BR-51
+
+اختبرت الالغاء قبل pickup بـ48 ساعة بالضبط القاعدة تقول 48 ساعة او اكثر الرسوم صفر لكن الكود رجع 50% من daily rate وهي 300
+
+السبب ان الشرط في `CancellationService` مكتوب `hours > 48` بدل `hours >= 48`
+
+رساله الفشل
+
+```text
+Expected fee to be 0M, but found 300.00M.
 ```
 
 

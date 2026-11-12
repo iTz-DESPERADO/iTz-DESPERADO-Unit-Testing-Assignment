@@ -237,3 +237,24 @@ Group / ID: G4
 
 قبلت الحدود وحالات overlap والحجوزات المقفولة وعدم وجود side effects للحجز المرفوض لانها كانت فعلا ناقصة بعد الاضافة ظهر نفس bug BR-21 في الطرفين المسموحين من back-to-back، وظهر bug BR-16 عند عمر 25 من قبل
 
+## Task 7 — Pickups, Returns and Cancellations
+
+| Rule | Tests | اللي اختبرته |
+|---|---|---|
+| BR-28 | `StartRental_BookingDoesNotExist_ThrowsBookingNotFoundException`, `StartRental_BookingIsNotReserved_ThrowsInvalidBookingStateException`, `StartRental_OneTickBeforeAllowedTime_ThrowsInvalidBookingStateException`, `StartRental_AtOrAfterAllowedTime_MarksBookingActive` | الحجز المفقود والحالات الغلط وحد ساعة قبل pickup على الجهتين |
+| BR-41 | `ProcessReturn_LateMinutes_ReturnsCorrectLateFee` | 0 و59 و60 و61 و239 و240 و241 دقيقة وكمان 24 ساعة وبعدها بدقيقة |
+| BR-42 | `ProcessReturn_DistanceOverAllowance_ReturnsCorrectMileageFee` | حد المسافة وextra km وLuxury |
+| BR-43 | `ProcessReturn_MissingFuelQuarters_ReturnsCorrectFuelFee`, `ProcessReturn_FuelQuartersOutsideRange_ThrowsArgumentException` | 4 و3 و2 quarters وحدود fuel الغلط |
+| BR-44 | `ProcessReturn_DamageAndInsurance_ReturnsCorrectDamageCharge` | Basic وStandard وPremium والضرر قبل وبعد deductible |
+| BR-45 | `ProcessReturn_EarlyReturn_DoesNotRefundUnusedRentalDays` | رجوع بدري بدون refund لايام الايجار |
+| BR-46 | `ProcessReturn_ValidReturn_CompletesRentalAndHandlesPayments` | Completed وmileage وloyalty وrefund والايميل وaudit |
+| BR-50 | `Cancel_BookingIsNotReserved_ThrowsInvalidBookingStateException`, `Cancel_PickupTimeHasArrived_ThrowsInvalidBookingStateException` | Reserved فقط ووقت pickup نفسه |
+| BR-51 | `Cancel_HoursUntilPickup_ReturnsCorrectFee` | 48h و قبلها، 24h و قبلها، وPlatinum |
+| BR-52 | `Cancel_DepositIsMoreThanFee_RefundsTheDifference`, `Cancel_FeeIsMoreThanDeposit_ChargesTheDifference` | deposit اكبر من fee والعكس |
+| BR-53 | `Cancel_ValidBooking_CancelsAndSendsNotifications` | Cancelled وpromo decrement وSMS وemail وaudit |
+
+### Self review - Pickups, Returns and Cancellations
+
+**think these are enough because**
+
+غطيت كل حدود الوقت اللي في القواعد: ساعة قبل pickup لبدء الايجار 59 و60 و61 و240 دقيقة للتاخير 24 و48 ساعة للالغاء وكمان اختبرت قبل وبعد الحدود المهمة
