@@ -14,10 +14,15 @@ public class ParkingFeeCalculator
         if (duration <= TimeSpan.FromMinutes(15))
             return 0m;
 
+        return CalculateFee(duration);
+    }
+
+    private static decimal CalculateFee(TimeSpan duration)
+    {
         var totalHours = Math.Ceiling(duration.TotalHours);
 
         var totalFee = (decimal)totalHours * 10m;
 
-        return  totalHours > 8 ? 80 : totalFee;
+        return Math.Min(totalFee, 80m);
     }
 }
