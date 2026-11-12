@@ -1,10 +1,9 @@
-using DriveNow.Application.Interfaces;
 using DriveNow.Domain.Entities;
 using DriveNow.Domain.ValueObjects;
 
 namespace DriveNow.Application.Receipts;
 
-public class LineItemFactory : ILineItemFactory
+public class LineItemFactory
 {
     public List<LineItem> Create(Booking booking, ReturnReport? report)
     {
