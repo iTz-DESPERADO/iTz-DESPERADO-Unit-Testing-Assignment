@@ -16,6 +16,8 @@ public class ParkingFeeCalculator
 
         var totalHours = Math.Ceiling(duration.TotalHours);
 
-        return (decimal)totalHours * 10m;
+        var totalFee = (decimal)totalHours * 10m;
+
+        return  totalHours > 8 ? 80 : totalFee;
     }
 }
