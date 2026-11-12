@@ -101,3 +101,13 @@ UnitTests في التقرير الكامل: 216 passed, 14 failed. LegacyTests: 
 
 `ReceiptService` وclasses الخاصة بالـreceipt وصلت 100%. الاختبار الجديد شغّل VAT والformatting والنص الكامل بدل ما يختبر calls للـmocks فقط.
 
+## Task 9 - Coverage is not correctness
+
+### R5 - 100% coverage مع وجود bug
+
+`RentalMathService` وصل 100% line وbranch coverage مع ذلك اختبار BR-03 عند 25 ساعة بالضبط ما زال يفشل المتوقع يوم واحد لكن الناتج يومين كل سطر اتنفذ لكن الشرط استخدم `>= 60` بدل `> 60`. لذلك coverage يثبت ان الكود اتشغل لا يثبت ان النتيجة صح عند boundary
+
+### R6 - branch اخترت ما اختبرها
+
+في `LoyaltyService.UpgradeTier` ما اختبرت branch ترقية Platinum عند `CompletedRentals >= 30` تقرير Task 8 يبين ان line الشرط اتنفذ لكن true branch لم يتنفذ اخترت اتركه لان اختباراتنا الحالية في BR-46 تحتاج حالة 4 الى 5 وترقية Silver فقط وما عندي سيناريو في التاسكات الحالية يحتاج 30 rental. ما استبعدتش الكود من coverage علشان الرقم يبان اعلى الفرع ظاهر في التقرير كغير مغطى
+
