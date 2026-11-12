@@ -27,7 +27,7 @@ public class PricingPromoPercentTests
             ValidUntil = new DateTime(2026, 12, 1),
             MaxUses = 100
         };
-        var sut = new PricingService(new PromoPercentTimeProvider(), new PromoPercentRepository(promo));
+        var sut = new PricingService(new PromoPercentTimeProvider(), new StubPromoPercentRepository(promo));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(1), InsurancePlan = InsurancePlan.Basic, PromoCode = "sample" };
@@ -46,7 +46,7 @@ public class PricingPromoPercentTests
         // Arrange
         var pickup = new DateTime(2026, 11, 12, 10, 0, 0);
         var promo = new PromoCode { Code = "SAVE5", DiscountPercent = 5, MinDays = 1, ValidFrom = new DateTime(2026, 11, 1), ValidUntil = new DateTime(2026, 12, 1), MaxUses = 100 };
-        var sut = new PricingService(new PromoPercentTimeProvider(), new PromoPercentRepository(promo));
+        var sut = new PricingService(new PromoPercentTimeProvider(), new StubPromoPercentRepository(promo));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 100.005m, Category = VehicleCategory.Economy };
         // AI suggestion: verify promo arithmetic when BaseAmount is rounded from a fractional rate.
@@ -62,7 +62,7 @@ public class PricingPromoPercentTests
 
 }
 
-internal sealed class PromoPercentRepository(PromoCode? promo) : IPromoCodeRepository
+internal sealed class StubPromoPercentRepository(PromoCode? promo) : IPromoCodeRepository
 {
     public PromoCode? GetByCode(string code) => string.Equals(promo?.Code, code, StringComparison.OrdinalIgnoreCase) ? promo : null;
     public void Update(PromoCode promo) { }

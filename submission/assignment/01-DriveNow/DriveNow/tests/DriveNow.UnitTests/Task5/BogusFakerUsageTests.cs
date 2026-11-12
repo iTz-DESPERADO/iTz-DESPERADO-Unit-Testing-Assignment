@@ -20,7 +20,7 @@ public class BogusFakerUsageTests
             .WithAge(23, pickup).WithTier(LoyaltyTier.None).Generate();
         var vehicle = new VehicleFaker(12345).WithDailyRate(600m).Generate();
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(1), InsurancePlan = InsurancePlan.Basic };
-        var pricing = new PricingService(TimeProvider.System, new EmptyPromoCodeRepository());
+        var pricing = new PricingService(TimeProvider.System, new StubEmptyPromoCodeRepository());
 
         // Act
         var result = pricing.Calculate(customer, vehicle, request);
@@ -40,7 +40,7 @@ public class BogusFakerUsageTests
 
         // Act
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(1), InsurancePlan = InsurancePlan.Basic };
-        var pricing = new PricingService(TimeProvider.System, new EmptyPromoCodeRepository());
+        var pricing = new PricingService(TimeProvider.System, new StubEmptyPromoCodeRepository());
         var result = pricing.Calculate(customer, vehicle, request);
 
         // Assert
@@ -49,7 +49,7 @@ public class BogusFakerUsageTests
     }
 }
 
-internal sealed class EmptyPromoCodeRepository : IPromoCodeRepository
+internal sealed class StubEmptyPromoCodeRepository : IPromoCodeRepository
 {
     public PromoCode? GetByCode(string code) => null;
     public void Update(PromoCode promo) { }

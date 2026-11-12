@@ -30,7 +30,7 @@ public class PricingRentalAndSnapshotTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RentalPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRentalPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(days).AddMinutes(extraMinutes), InsurancePlan = InsurancePlan.Basic };
@@ -51,7 +51,7 @@ public class PricingRentalAndSnapshotTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RentalPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRentalPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddMinutes(offset), InsurancePlan = InsurancePlan.Basic };
@@ -71,7 +71,7 @@ public class PricingRentalAndSnapshotTests
         var promo = new PromoCode { Code = "SAVE15", DiscountPercent = 15,
             ValidFrom = new DateTime(2026, 11, 1), ValidUntil = new DateTime(2026, 12, 1),
             MinDays = 1, MaxUses = 100 };
-        var pricing = new PricingService(new RentalPromoTimeProvider(), new RentalPromoRepository(promo));
+        var pricing = new PricingService(new RentalPromoTimeProvider(), new StubRentalPromoRepository(promo));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var pickup = new DateTime(2026, 11, 12, 10, 0, 0);
@@ -96,7 +96,7 @@ public class PricingRentalAndSnapshotTests
         var vehicle = (Vehicle)data[1];
         var request = (BookingRequest)data[2];
         var promo = (PromoCode?)data[3];
-        var pricing = new PricingService(new RentalPromoTimeProvider(), new RentalPromoRepository(promo));
+        var pricing = new PricingService(new RentalPromoTimeProvider(), new StubRentalPromoRepository(promo));
 
         // Act
         var price = pricing.Calculate(customer, vehicle, request);
@@ -106,7 +106,7 @@ public class PricingRentalAndSnapshotTests
     }
 }
 
-internal sealed class RentalPromoRepository(PromoCode? promo) : IPromoCodeRepository
+internal sealed class StubRentalPromoRepository(PromoCode? promo) : IPromoCodeRepository
 {
     public PromoCode? GetByCode(string code) => string.Equals(promo?.Code, code, StringComparison.OrdinalIgnoreCase) ? promo : null;
     public void Update(PromoCode promo) { }

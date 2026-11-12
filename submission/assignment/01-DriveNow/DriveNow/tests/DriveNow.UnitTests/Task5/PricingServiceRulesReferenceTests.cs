@@ -30,7 +30,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = DateTime.ParseExact(pickupDate, "yyyy-MM-dd", CultureInfo.InvariantCulture).AddHours(10);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(days), InsurancePlan = InsurancePlan.Basic };
@@ -51,7 +51,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = DateTime.ParseExact(pickupDate, "yyyy-MM-dd", CultureInfo.InvariantCulture).AddHours(10);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddHours(hours).AddMinutes(minutes), InsurancePlan = InsurancePlan.Basic };
@@ -74,7 +74,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = pickup.Date.AddYears(-age), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(1), InsurancePlan = InsurancePlan.Basic };
@@ -95,7 +95,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = DateTime.ParseExact(birthDate, "yyyy-MM-dd", CultureInfo.InvariantCulture), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(rentalDays), InsurancePlan = InsurancePlan.Basic };
@@ -119,7 +119,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(days), InsurancePlan = InsurancePlan.Basic };
@@ -141,7 +141,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = tier };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(1), InsurancePlan = InsurancePlan.Basic };
@@ -166,7 +166,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = category };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(1), InsurancePlan = plan };
@@ -184,7 +184,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Luxury };
         // AI suggestion: insurance cost must also scale with rental days.
@@ -211,7 +211,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = tier };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(1), InsurancePlan = InsurancePlan.Basic, AdditionalDrivers = drivers };
@@ -229,7 +229,7 @@ public class PricingServiceRulesReferenceTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 8, 10, 0, 0);
-        var pricing = new PricingService(TimeProvider.System, new RulesPromoRepository(null));
+        var pricing = new PricingService(TimeProvider.System, new StubRulesPromoRepository(null));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.Gold };
         var vehicle = new Vehicle { DailyRate = 600m, Category = VehicleCategory.Economy };
         // AI suggestion: the free driver is applied once, then cost scales with rental days.
@@ -259,7 +259,7 @@ public class PricingServiceRulesReferenceTests
             ValidFrom = new DateTime(2026, 11, 1), ValidUntil = new DateTime(2026, 12, 1),
             MaxUses = 100, MinDays = 1 };
 
-        var pricing = new PricingService(new RulesPromoTimeProvider(), new RulesPromoRepository(promo));
+        var pricing = new PricingService(new RulesPromoTimeProvider(), new StubRulesPromoRepository(promo));
 
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = tier };
 
@@ -289,7 +289,7 @@ public class PricingServiceRulesReferenceTests
         Customer customer, Vehicle vehicle, BookingRequest request, PromoCode? promo, PriceBreakdown expected)
     {
         // Arrange
-        var pricing = new PricingService(new RulesPromoTimeProvider(), new RulesPromoRepository(promo));
+        var pricing = new PricingService(new RulesPromoTimeProvider(), new StubRulesPromoRepository(promo));
 
         // Act
         var actual = pricing.Calculate(customer, vehicle, request);
@@ -302,7 +302,7 @@ public class PricingServiceRulesReferenceTests
     }
 }
 
-internal sealed class RulesPromoRepository(PromoCode? promo) : IPromoCodeRepository
+internal sealed class StubRulesPromoRepository(PromoCode? promo) : IPromoCodeRepository
 {
     public PromoCode? GetByCode(string code) => string.Equals(promo?.Code, code, StringComparison.OrdinalIgnoreCase) ? promo : null;
     public void Update(PromoCode promo) { }

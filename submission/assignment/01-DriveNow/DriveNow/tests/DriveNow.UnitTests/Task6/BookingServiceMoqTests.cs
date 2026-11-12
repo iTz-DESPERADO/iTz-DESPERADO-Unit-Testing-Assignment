@@ -104,7 +104,7 @@ public class BookingServiceMoqTests
         return new BookingService(
             new PricingService(new FixedBookingTimeProvider(BookingTestFactory.Now), promoRepository.Object),
             new FixedBookingTimeProvider(BookingTestFactory.Now),
-            new FixedReferenceGenerator("DN-20261112-AB12"),
+            new StubReferenceGenerator("DN-20261112-AB12"),
             promoRepository.Object,
             bookingRepository,
             vehicleRepository.Object,

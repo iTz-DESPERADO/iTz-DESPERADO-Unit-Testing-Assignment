@@ -33,7 +33,9 @@ public class BookingServiceAutoFixtureTests
         references.Setup(generator => generator.Generate(It.IsAny<DateTime>())).Returns("DN-20261112-AF01");
 
         // Act
-        var booking = service.CreateBooking(BookingTestFactory.Request());
+        var booking = service.CreateBooking(BookingTestFactory.Request(
+            pickup: BookingTestFactory.Now.DateTime.AddHours(3),
+            returnAt: BookingTestFactory.Now.DateTime.AddHours(27)));
 
         // Assert
         booking.Deposit.Should().Be(0m);
@@ -42,12 +44,12 @@ public class BookingServiceAutoFixtureTests
 
     [Fact]
     [Trait("Rule", "BR-12")]
-    public void CreateBooking_AnonymousCustomerCanBreakAgeRule()
+    public void CreateBooking_AnonymousCustomer_IsNotAdult()
     {
         // Arrange
         var fixture = new Fixture();
         var anonymousCustomer = fixture.Create<Customer>();
-        var pickup = BookingTestFactory.Now.DateTime.AddHours(2);
+        var pickup = BookingTestFactory.Now.DateTime.AddHours(3);
         var age = DriveNow.Domain.Services.RentalMathService.CalculateAge(anonymousCustomer.DateOfBirth, pickup);
 
         // Act
@@ -65,7 +67,7 @@ public class BookingServiceAutoFixtureTests
         var fixture = new Fixture();
         fixture.Customize(new ValidAdultCustomerCustomization());
         var customer = fixture.Create<Customer>();
-        var pickup = BookingTestFactory.Now.DateTime.AddHours(2);
+        var pickup = BookingTestFactory.Now.DateTime.AddHours(3);
 
         // Act
         var age = DriveNow.Domain.Services.RentalMathService.CalculateAge(customer.DateOfBirth, pickup);
@@ -87,7 +89,7 @@ public class BookingServiceAutoFixtureTests
         BookingService service)
     {
         // Arrange
-        var pickup = BookingTestFactory.Now.DateTime.AddHours(2);
+        var pickup = BookingTestFactory.Now.DateTime.AddHours(3);
         ConfigureClock(clock);
         ConfigureValidBooking(customers, vehicles, bookings, pickup, age);
 
@@ -110,7 +112,7 @@ public class BookingServiceAutoFixtureTests
         BookingService service)
     {
         // Arrange
-        var pickup = BookingTestFactory.Now.DateTime.AddHours(2);
+        var pickup = BookingTestFactory.Now.DateTime.AddHours(3);
         ConfigureClock(clock);
         ConfigureValidBooking(customers, vehicles, bookings, pickup, age);
 

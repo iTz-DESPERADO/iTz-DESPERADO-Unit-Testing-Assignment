@@ -12,7 +12,7 @@ internal sealed class FixedBookingTimeProvider(DateTimeOffset now) : TimeProvide
     public override TimeZoneInfo LocalTimeZone => TimeZoneInfo.Utc;
 }
 
-internal sealed class FixedReferenceGenerator(string reference) : IBookingReferenceGenerator
+internal sealed class StubReferenceGenerator(string reference) : IBookingReferenceGenerator
 {
     public string Generate(DateTime pickupAt) => reference;
 }
@@ -76,7 +76,7 @@ internal sealed class SpyEmailSender : IEmailSender
     public void Send(string to, string subject, string body) => Calls.Add((to, subject, body));
 }
 
-internal sealed class HandWrittenPaymentMock : IPaymentGateway
+internal sealed class MockPaymentGateway : IPaymentGateway
 {
     public List<(int CustomerId, decimal Amount, string Description)> Charges { get; } = [];
     public string Charge(int customerId, decimal amount, string description)
@@ -166,12 +166,12 @@ internal static class BookingTestFactory
         string reference = "DN-20261112-AB12") => new(
         new PricingService(new FixedBookingTimeProvider(Now), promos ?? new StubPromoRepository()),
         new FixedBookingTimeProvider(Now),
-        referenceGenerator ?? new FixedReferenceGenerator(reference),
+        referenceGenerator ?? new StubReferenceGenerator(reference),
         promos ?? new StubPromoRepository(),
         bookings ?? new FakeBookingRepository(),
         new StubVehicleRepository(vehicleExists ? vehicle ?? Vehicle() : null),
         new StubCustomerRepository(customerExists ? customer ?? Customer() : null),
-        payments ?? new HandWrittenPaymentMock(),
+        payments ?? new MockPaymentGateway(),
         sms ?? new SpySmsSender(),
         email ?? new SpyEmailSender(),
         audit ?? new DummyAuditLog());

@@ -166,7 +166,8 @@ public sealed class ProductionNamingRulesTests
                                           BindingFlags.Static | BindingFlags.Instance |
                                           BindingFlags.DeclaredOnly);
 
-            foreach (var method in methods.Where(m => !m.IsSpecialName && !m.Name.Contains('.')))
+            foreach (var method in methods.Where(m => !m.IsSpecialName && !m.Name.Contains('.') &&
+                                                       !m.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false)))
             {
                 if (!Regex.IsMatch(method.Name, PascalCasePattern))
                     errors.Add($"Method: {type.FullName}.{method.Name}");

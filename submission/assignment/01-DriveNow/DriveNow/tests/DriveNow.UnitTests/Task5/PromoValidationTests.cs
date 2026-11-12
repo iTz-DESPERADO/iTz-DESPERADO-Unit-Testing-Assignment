@@ -19,7 +19,7 @@ public class PromoValidationTests
     {
         // Arrange
         var pickup = new DateTime(2026, 11, 12, 10, 0, 0);
-        var pricing = new PricingService(new FixedPromoTimeProvider(), new PromoCodeRepository(promo));
+        var pricing = new PricingService(new FixedPromoTimeProvider(), new StubPromoCodeRepository(promo));
         var customer = new Customer { DateOfBirth = new DateTime(1990, 1, 1), LoyaltyTier = LoyaltyTier.None };
         var vehicle = new Vehicle { DailyRate = 600m, Category = category };
         var request = new BookingRequest { PickupAt = pickup, ReturnAt = pickup.AddDays(days), InsurancePlan = InsurancePlan.Basic, PromoCode = "SAVE15" };
@@ -36,7 +36,7 @@ public class PromoValidationTests
     }
 }
 
-internal sealed class PromoCodeRepository(PromoCode? promo) : IPromoCodeRepository
+internal sealed class StubPromoCodeRepository(PromoCode? promo) : IPromoCodeRepository
 {
     public PromoCode? GetByCode(string code) => string.Equals(promo?.Code, code, StringComparison.OrdinalIgnoreCase) ? promo : null;
     public void Update(PromoCode promo) { }

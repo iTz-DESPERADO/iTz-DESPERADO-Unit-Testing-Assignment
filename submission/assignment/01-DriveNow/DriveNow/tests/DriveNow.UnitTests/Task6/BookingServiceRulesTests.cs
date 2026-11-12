@@ -292,7 +292,7 @@ public class BookingServiceRulesTests
         decimal expectedDeposit)
     {
         // Arrange
-        var payments = new HandWrittenPaymentMock();
+        var payments = new MockPaymentGateway();
         var service = BookingTestFactory.CreateService(
             vehicle: BookingTestFactory.Vehicle(category: category),
             payments: payments);
@@ -311,7 +311,7 @@ public class BookingServiceRulesTests
     public void CreateBooking_PlatinumCustomer_DoesNotChargeDeposit()
     {
         // Arrange
-        var payments = new HandWrittenPaymentMock();
+        var payments = new MockPaymentGateway();
         var service = BookingTestFactory.CreateService(
             customer: BookingTestFactory.Customer(tier: LoyaltyTier.Platinum),
             payments: payments);
