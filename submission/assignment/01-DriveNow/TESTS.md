@@ -258,3 +258,30 @@ Group / ID: G4
 **think these are enough because**
 
 غطيت كل حدود الوقت اللي في القواعد: ساعة قبل pickup لبدء الايجار 59 و60 و61 و240 دقيقة للتاخير 24 و48 ساعة للالغاء وكمان اختبرت قبل وبعد الحدود المهمة
+
+### AI Suggestions Review — Pickups, Returns and Cancellations
+
+| AI Suggestion | Decision | Why |
+|---|---|---|
+| BR-28 exact one hour، 59 minutes، بعد pickup، والرسائل | Rejected | موجودة بالفعل في الاختبارات الحالية: tick قبل الحد، عنده، وبعده، والرسالة exact |
+| BR-41 119 و120 و121 دقيقة و59m59s | Accepted | حالات rounding داخل الساعة ودقة الثواني كانت ناقصة |
+| BR-41 59/60/61 و240/241 و1440/1441 | Rejected | موجودة بالفعل في `InlineData` |
+| BR-42 Luxury عند 1 km زيادة | Accepted | علشان اتأكد من سعر Luxury بالحد الاول |
+| BR-42 allowance مع rental days وregular rate | Rejected | موجودة بالفعل بحالات 2 days وEconomy |
+| BR-43 كل fuel values وVan | Accepted | كان عندي حالات اساسية وSUV فقط |
+| BR-44 zero damage وBasic عند deductible | Accepted | حدود deductible دي ناقصة |
+| BR-45 early return 7 days وextras | Rejected | الاختبار الحالي يثبت قيمة الايجار ما تتغيرش وعدم وجود refund لليوم الباقي |
+| BR-46 combined extras في charge واحد | Accepted | علشان اجمع late fee وmileage وfuel وdamage في سيناريو واحد |
+| BR-46 loyalty وzero extras وdeposit branches | Rejected | موجودة بالفعل في اختبار return الكامل: 4 الى 5 Silver وzero extras وdeposit refund |
+| BR-50 booking missing | Accepted | كان ناقص |
+| BR-50 Active/Completed/Cancelled وpickup now | Rejected | موجودة بالفعل |
+| BR-51 49h وPlatinum عدة مرات | Rejected | 48h و24h وعلى الجهتين موجودة، وPlatinum عند ساعة واحدة يغطي branch الاعفاء |
+| BR-52 deposit يساوي fee | Accepted | حد equality كان ناقص |
+| BR-53 cancellation بدون promo | Accepted | علشان promo غير المستخدم ما يتغيرش |
+| BR-53 الرسائل والpromo decrement والfee | Rejected | موجودة بالفعل في اختبار cancellation الكامل |
+
+#### Judge the AI — Pickups, Returns and Cancellations
+
+الـ AI شاف اسماء الاختبارات فقط علشان كده اقترح حالات موجودة فعلا في `InlineData` زي 59 و60 و61 دقيقة و240 و241 دقيقة او موجودة في Assertions زي رسائل الخطأ وpromo decrement
+
+قبلت الحالات اللي فعلًا ناقصة خصوصا seconds في BR-41 وحدود fuel وdeductible والـcombined extras وحد equality بين deposit وfee بعد الاضافة ما ظهرش bug جديد وفضلوا نفس BR-41 عند 240 دقيقة وBR-51 عند 48 ساعة

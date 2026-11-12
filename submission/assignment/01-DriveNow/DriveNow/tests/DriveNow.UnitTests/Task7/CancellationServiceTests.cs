@@ -10,6 +10,33 @@ namespace DriveNow.UnitTests.Task7;
 
 public class CancellationServiceTests
 {
+    [Fact]
+    [Trait("Rule", "BR-50")]
+    public void Cancel_BookingDoesNotExist_ThrowsBookingNotFoundException()
+    {
+        // AI suggestion: test the missing booking validation.
+        // Arrange
+        var now = new DateTime(2026, 11, 12, 10, 0, 0);
+        var bookings = new FakeBookingRepository();
+        var service = new CancellationService(
+            new FixedBookingTimeProvider(new DateTimeOffset(now, TimeSpan.Zero)),
+            new StubPromoRepository(),
+            bookings,
+            new StubVehicleRepository(new Vehicle()),
+            new StubCustomerRepository(CancellationTestFactory.Customer()),
+            new SpyReturnPaymentGateway(),
+            new SpySmsSender(),
+            new SpyEmailSender(),
+            new SpyAuditLog());
+
+        // Act
+        Action act = () => service.Cancel(99);
+
+        // Assert
+        act.Should().Throw<BookingNotFoundException>()
+            .WithMessage("Booking #99 not found");
+    }
+
     [Theory]
     [InlineData(BookingStatus.Active)]
     [InlineData(BookingStatus.Completed)]
@@ -88,6 +115,26 @@ public class CancellationServiceTests
 
     [Fact]
     [Trait("Rule", "BR-52")]
+    public void Cancel_DepositEqualsFee_DoesNotChargeOrRefund()
+    {
+        // AI suggestion: check the equality boundary between deposit and fee.
+        // Arrange
+        var now = new DateTime(2026, 11, 12, 10, 0, 0);
+        var booking = CancellationTestFactory.Booking(now.AddHours(24), deposit: 300m);
+        var payments = new SpyReturnPaymentGateway();
+        var service = CancellationTestFactory.CreateService(booking, CancellationTestFactory.Customer(), now, payments: payments);
+
+        // Act
+        var fee = service.Cancel(1);
+
+        // Assert
+        fee.Should().Be(300m);
+        payments.Refunds.Should().BeEmpty();
+        payments.Charges.Should().BeEmpty();
+    }
+
+    [Fact]
+    [Trait("Rule", "BR-52")]
     public void Cancel_FeeIsMoreThanDeposit_ChargesTheDifference()
     {
         // Arrange
@@ -137,6 +184,25 @@ public class CancellationServiceTests
         sms.Calls.Should().ContainSingle().Which.Should().Be(("5550100", "Booking DN-20261114-CN01 cancelled"));
         email.Calls.Should().ContainSingle().Which.Should().Be(("gamal@example.com", "Booking DN-20261114-CN01 cancelled", "Booking DN-20261114-CN01 cancelled"));
         audit.Messages.Should().ContainSingle().Which.Should().Be("Booking DN-20261114-CN01 cancelled");
+    }
+
+    [Fact]
+    [Trait("Rule", "BR-53")]
+    public void Cancel_BookingWithoutPromo_DoesNotUpdatePromo()
+    {
+        // AI suggestion: cancellation without a promo must not change promo data.
+        // Arrange
+        var now = new DateTime(2026, 11, 12, 10, 0, 0);
+        var promos = new StubPromoRepository(new PromoCode { Code = "SAVE10", UsedCount = 4 });
+        var booking = CancellationTestFactory.Booking(now.AddDays(3));
+        var service = CancellationTestFactory.CreateService(booking, CancellationTestFactory.Customer(), now, promos: promos);
+
+        // Act
+        service.Cancel(1);
+
+        // Assert
+        promos.Promo!.UsedCount.Should().Be(4);
+        promos.UpdateCalls.Should().Be(0);
     }
 }
 

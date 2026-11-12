@@ -52,6 +52,10 @@ public class ReturnServiceTests
     [InlineData(59, 0)]
     [InlineData(60, 60)]
     [InlineData(61, 120)]
+    // AI suggestion: check rounding within the hourly-fee range.
+    [InlineData(119, 120)]
+    [InlineData(120, 120)]
+    [InlineData(121, 180)]
     [InlineData(239, 240)]
     [InlineData(240, 240)]
     [InlineData(241, 600)]
@@ -76,10 +80,33 @@ public class ReturnServiceTests
         report.LateFee.Should().Be(expectedFee);
     }
 
+    [Fact]
+    [Trait("Rule", "BR-41")]
+    public void ProcessReturn_FiftyNineMinutesAndFiftyNineSecondsLate_ReturnsNoLateFee()
+    {
+        // AI suggestion: late minutes are whole minutes, so seconds are truncated.
+        // Arrange
+        var booking = ReturnTestFactory.Booking(returnAt: new DateTime(2026, 11, 12, 10, 0, 0));
+        var service = ReturnTestFactory.CreateService(
+            booking,
+            ReturnTestFactory.Vehicle(),
+            ReturnTestFactory.Customer(),
+            booking.ReturnAt.AddMinutes(59).AddSeconds(59));
+
+        // Act
+        var report = service.ProcessReturn(1, 1000, 4, 0m);
+
+        // Assert
+        report.LateMinutes.Should().Be(59);
+        report.LateFee.Should().Be(0m);
+    }
+
     [Theory]
     [InlineData(VehicleCategory.Economy, 500, 0, 0)]
     [InlineData(VehicleCategory.Economy, 501, 1, 0.75)]
     [InlineData(VehicleCategory.Luxury, 600, 100, 150)]
+    // AI suggestion: verify the Luxury rate at one kilometre over the allowance.
+    [InlineData(VehicleCategory.Luxury, 501, 1, 1.50)]
     [Trait("Rule", "BR-42")]
     public void ProcessReturn_DistanceOverAllowance_ReturnsCorrectMileageFee(
         VehicleCategory category,
@@ -108,6 +135,9 @@ public class ReturnServiceTests
     [InlineData(VehicleCategory.Economy, 4, 0)]
     [InlineData(VehicleCategory.Economy, 3, 200)]
     [InlineData(VehicleCategory.SUV, 2, 600)]
+    // AI suggestion: cover the remaining fuel values and Van independently.
+    [InlineData(VehicleCategory.Economy, 0, 800)]
+    [InlineData(VehicleCategory.Van, 1, 900)]
     [Trait("Rule", "BR-43")]
     public void ProcessReturn_MissingFuelQuarters_ReturnsCorrectFuelFee(
         VehicleCategory category,
@@ -135,6 +165,9 @@ public class ReturnServiceTests
     [InlineData(InsurancePlan.Standard, 2000, 2000)]
     [InlineData(InsurancePlan.Standard, 4000, 3000)]
     [InlineData(InsurancePlan.Premium, 1000, 0)]
+    // AI suggestion: test the deductible boundary and zero reported damage.
+    [InlineData(InsurancePlan.Basic, 0, 0)]
+    [InlineData(InsurancePlan.Basic, 10000, 10000)]
     [Trait("Rule", "BR-44")]
     public void ProcessReturn_DamageAndInsurance_ReturnsCorrectDamageCharge(
         InsurancePlan insurance,
@@ -174,6 +207,29 @@ public class ReturnServiceTests
         report.LateMinutes.Should().Be(0);
         booking.Price.BaseAmount.Should().Be(2400m);
         payments.Refunds.Should().BeEmpty();
+    }
+
+    [Fact]
+    [Trait("Rule", "BR-46")]
+    public void ProcessReturn_MultipleExtras_ChargesTheirCombinedAmountOnce()
+    {
+        // AI suggestion: combine late fee, mileage, fuel and damage in one return.
+        // Arrange
+        var booking = ReturnTestFactory.Booking(returnAt: new DateTime(2026, 11, 12, 10, 0, 0), rentalDays: 1);
+        var payments = new SpyReturnPaymentGateway();
+        var service = ReturnTestFactory.CreateService(
+            booking,
+            ReturnTestFactory.Vehicle(category: VehicleCategory.SUV),
+            ReturnTestFactory.Customer(),
+            booking.ReturnAt.AddMinutes(60),
+            payments);
+
+        // Act
+        var report = service.ProcessReturn(1, 1251, 3, 12000m);
+
+        // Assert
+        report.TotalExtra.Should().Be(10360.75m);
+        payments.Charges.Should().ContainSingle().Which.Should().Be((10, 10360.75m, "Extras DN-20261110-RT01"));
     }
 
     [Fact]
