@@ -11,6 +11,6 @@ public class ParkingFeeCalculator
         if (duration <= TimeSpan.FromMinutes(15))
             return 0m;
 
-        return 1m;
+        return 10m;
     }
 }
