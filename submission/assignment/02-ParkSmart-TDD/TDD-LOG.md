@@ -13,3 +13,4 @@ Group / ID: G4
 | `red(S2)` / `green(S2)` | `Calculate_JustBeyondFirstHour_ReturnsTwenty` | Expected fee to be `20m` but found `10m` | Added the branch after the first hour and returned `20m` | None |
 | `red(S2)` / `green(S2)` | `Calculate_MultipleStartedHours_ReturnsCorrectFee` | Expected fee to be `40m` but found `20m` | Replaced the fixed fee with `Math.Ceiling` so each started hour costs `10m` | None |
 | `red(S3)` / `green(S3)` | `Calculate_ExitBeforeEntry_ThrowsArgumentException` | Expected `ArgumentException`, but no exception was thrown | Added validation before calculating the duration | None |
+| `red(S4)` / `green(S4)` | `Calculate_TenHours_ReturnsDailyCap` | Expected fee to be `80m` but found `100m` | Added the daily cap of `80m` | None |
