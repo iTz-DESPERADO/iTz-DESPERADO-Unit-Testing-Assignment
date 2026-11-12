@@ -135,7 +135,7 @@ public class BookingService
         if (!vehicle.IsAvailable)
             throw new BookingRejectedException("Vehicle is not available");
 
-        if (vehicle.Category == VehicleCategory.Luxury && !(age > 25 && licenseYears >= 3))
+        if (vehicle.Category == VehicleCategory.Luxury && !(age >= 25 && licenseYears >= 3))
             throw new BookingRejectedException("Luxury vehicles require age 25+ and 3 years of license");
 
         if (vehicle.Category == VehicleCategory.Van && licenseYears < 2)
