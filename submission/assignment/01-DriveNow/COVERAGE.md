@@ -88,3 +88,16 @@ UnitTests في التقرير الكامل: 162 passed, 12 failed. LegacyTests: 
 
 UnitTests في التقرير الكامل: 216 passed, 14 failed. LegacyTests: 5 passed, 0 failed. من 14 فشل، 2 تخص Task 7: BR-41 عند 240 دقيقة وBR-51 عند 48 ساعة. الباقي bugs قديمة ومسجلة في `BUGS.md`.
 
+## After Task 8
+
+قست التغطية بعد استبدال legacy mocks باختبار receipt حقيقي وVerify. شغلت UnitTests وLegacyTests ثم دمجت التقريرين في ReportGenerator.
+
+| After task | Project | Covered lines / Total | Line Coverage | Covered branches / Total | Branch Coverage |
+|---|---|---:|---:|---:|---:|
+| Task 8 | DriveNow.Application | 421 / 424 | 99.29% | 175 / 184 | 95.11% |
+| Task 8 | DriveNow.Domain | 112 / 114 | 98.25% | 16 / 18 | 88.89% |
+
+UnitTests في التقرير الكامل: 216 passed, 14 failed. LegacyTests: 1 passed, 0 failed. الـ14 failures هي bugs قديمة ومسجلة في `BUGS.md`.
+
+`ReceiptService` وclasses الخاصة بالـreceipt وصلت 100%. الاختبار الجديد شغّل VAT والformatting والنص الكامل بدل ما يختبر calls للـmocks فقط.
+
