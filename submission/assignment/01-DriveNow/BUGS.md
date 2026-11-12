@@ -10,4 +10,5 @@ Group / ID: G4
 | 3 | BR-37 | `Calculate_DiscountCap_ReturnsCorrectPromoDiscount` - 7 days, Gold, Promo 15% | 210 | 630 | `97ab4c1` |
 | 4 | BR-39 | `Calculate_WorkedExample_ReturnsWholePriceBreakdown` - Example B, Silver, extra driver | 700 | 0 | `7f5cbc9` |
 | 5 | BR-16 | `CreateBooking_LuxuryDriverIsExactlyTwentyFiveWithThreeLicenseYears_CreatesBooking` | booking is created | `BookingRejectedException` | `487f190` |
-| 6 | BR-21 | `CreateBooking_PickupEqualsExistingReturn_CreatesBooking` and `CreateBooking_ReturnEqualsExistingPickup_CreatesBooking` | back-to-back booking is created | `BookingRejectedException` | — |
+| 6 | BR-21 | `CreateBooking_PickupEqualsExistingReturn_CreatesBooking` and `CreateBooking_ReturnEqualsExistingPickup_CreatesBooking` | back-to-back booking is created | `BookingRejectedException` | `4a2a0c4` |
+| 7 | BR-41 | `ProcessReturn_LateMinutes_ReturnsCorrectLateFee` - 240 minutes | 240 EGP | 600 EGP | — |
