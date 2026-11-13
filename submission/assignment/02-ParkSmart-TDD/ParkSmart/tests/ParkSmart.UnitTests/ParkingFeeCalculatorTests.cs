@@ -365,4 +365,25 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(expected);
     }
 
+    [Fact]
+    public void Calculate_FridayParkingUpToTwoHours_ReturnsZero()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 13, 10, 0, 0);
+        var exit = entry.AddHours(2);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = VehicleType.Car
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(0m);
+    }
+
 }
