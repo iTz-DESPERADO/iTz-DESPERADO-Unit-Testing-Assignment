@@ -19,10 +19,12 @@ public class ParkingFeeCalculator
 
     private static decimal CalculateFee(TimeSpan duration)
     {
-        var totalHours = Math.Ceiling(duration.TotalHours);
+        var fullDays = (int)(duration.TotalHours / 24);
 
-        var totalFee = (decimal)totalHours * 10m;
+        var remainingDuration = duration - TimeSpan.FromDays(fullDays);
 
-        return Math.Min(totalFee, 80m);
+        var remainingFee = Math.Min((decimal)Math.Ceiling(remainingDuration.TotalHours) * 10m, 80m);
+
+        return (fullDays * 80m) + remainingFee;
     }
 }
