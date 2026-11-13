@@ -10,15 +10,15 @@ public class ParkingFeeCalculator
             throw new ArgumentException(
                 "Exit time must be after entry time.");
 
-        if (session.TicketLost)
-            return LostTicketFee(session.Vehicle);
-
         var duration = session.ExitTime - session.EntryTime;
+
+        var normalFee = CalculateFee(duration, session.Vehicle);
+
+        if (session.TicketLost)
+            return Math.Max(normalFee, LostTicketFee(session.Vehicle));
 
         if (duration <= TimeSpan.FromMinutes(15))
             return 0m;
-
-        var normalFee = CalculateFee(duration, session.Vehicle);
 
         var nightStart = session.EntryTime.Date.AddHours(22);
 
