@@ -19,7 +19,7 @@ public class ParkingFeeCalculator
 
     private static decimal CalculateFee(TimeSpan duration, VehicleType vehicleType)
     {
-        var hourlyRate = vehicleType == VehicleType.Car ? 10m : 5m;
+        var hourlyRate = vehicleType == VehicleType.Car ? 10m : vehicleType == VehicleType.Motorcycle ? 5m : 25m;
 
         var dailyCap = vehicleType == VehicleType.Car ? 80 : 40;
 
