@@ -36,11 +36,6 @@ public class ParkingFeeCalculator
         if (duration <= freePeriod)
             return 0m;
 
-        if (session.IsSubscriber)
-            return Math.Round(
-                normalFee * 0.50m,
-                2,
-                MidpointRounding.AwayFromZero);
 
         var nightStart = session.EntryTime.Date.AddHours(22);
 
@@ -48,11 +43,19 @@ public class ParkingFeeCalculator
 
         var isEligibleNight = session.EntryTime >= nightStart && session.ExitTime <= nightEnd;
 
-        if (!isEligibleNight)
-            return normalFee;
+        var parkingFee = isEligibleNight
+        ? Math.Min(normalFee, NightFlatRate(session.Vehicle))
+        : normalFee;
 
+        if (session.IsSubscriber)
+        {
+            parkingFee = Math.Round(
+                parkingFee * 0.50m,
+                2,
+                MidpointRounding.AwayFromZero);
+        }
 
-        return Math.Min(normalFee, NightFlatRate(session.Vehicle));
+        return parkingFee;
     }
 
     private static bool IsSubscriberFree(ParkingSession session)
