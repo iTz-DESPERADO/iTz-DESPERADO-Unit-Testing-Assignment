@@ -15,7 +15,16 @@ public class ParkingFeeCalculator
         var normalFee = CalculateFee(duration, session.Vehicle);
 
         if (session.TicketLost)
-            return Math.Max(normalFee, LostTicketFee(session.Vehicle));
+        {
+            var feeAfterDiscount = session.IsSubscriber
+                ? Math.Round(
+                    normalFee * 0.50m,
+                    2,
+                    MidpointRounding.AwayFromZero)
+                : normalFee;
+
+            return Math.Max(feeAfterDiscount, LostTicketFee(session.Vehicle));
+        }
 
         if (IsSubscriberFree(session))
             return 0m;
