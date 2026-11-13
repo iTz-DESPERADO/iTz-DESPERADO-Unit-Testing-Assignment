@@ -21,7 +21,7 @@ public class ParkingFeeCalculator
     {
         var hourlyRate = HourlyRate(vehicleType);
 
-        var dailyCap = vehicleType == VehicleType.Car ? 80 : vehicleType == VehicleType.Motorcycle ? 40m : 200m;
+        var dailyCap = DailyCap(vehicleType);
 
         var fullDays = (int)(duration.TotalHours / 24);
 
@@ -38,6 +38,15 @@ public class ParkingFeeCalculator
             VehicleType.Car => 10m,
             VehicleType.Motorcycle => 5m,
             VehicleType.Truck => 25m,
+            _ => throw new ArgumentOutOfRangeException(nameof(vehicleType))
+        };
+
+    private static decimal DailyCap(VehicleType vehicleType) =>
+        vehicleType switch
+        {
+            VehicleType.Car => 80m,
+            VehicleType.Motorcycle => 40m,
+            VehicleType.Truck => 200m,
             _ => throw new ArgumentOutOfRangeException(nameof(vehicleType))
         };
 }

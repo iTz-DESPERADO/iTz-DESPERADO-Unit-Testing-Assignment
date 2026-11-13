@@ -18,4 +18,4 @@ Group / ID: G4
 | `red(S5)` / `green(S5)` | `Calculate_FirstStartedHourForMotoCycle_ReturnsFive` | Expected `5m` but found `10m` | Used the Motorcycle hourly rate of `5m` | None |
 | `red(S5)` / `green(S5)` | `Calculate_TenHoursForMotorCycle_ReturnsDailyCap` | Expected `40m` but found `50m` | Used the Motorcycle daily cap of `40m` | None |
 | `red(S5)` / `green(S5)` | `Calculate_FirstStartedHourForTruck_ReturnsTwentyFive` | Expected `25m` but found `5m` | Used the Truck hourly rate of `25m` | Extracted `HourlyRate()` |
-| `red(S5)` / `green(S5)` | `Calculate_TenHoursForTruck_ReturnsDailyCap` | Expected `200m` but found `40m` | Used the Truck daily cap of `200m` | None |
+| `red(S5)` / `green(S5)` | `Calculate_TenHoursForTruck_ReturnsDailyCap` | Expected `200m` but found `40m` | Used the Truck daily cap of `200m` | Extracted `DailyCap()` |
