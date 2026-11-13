@@ -451,4 +451,26 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(10m);
     }
 
+    [Fact]
+    public void Calculate_SubscriberOnSaturday_ReturnsHalfFee()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 14, 10, 0, 0);
+        var exit = entry.AddHours(3);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = VehicleType.Car,
+            IsSubscriber = true
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(15m);
+    }
+
 }
