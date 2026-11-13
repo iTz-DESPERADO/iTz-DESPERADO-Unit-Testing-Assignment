@@ -21,7 +21,7 @@ public class ParkingFeeCalculator
     {
         var hourlyRate = HourlyRate(vehicleType);
 
-        var dailyCap = vehicleType == VehicleType.Car ? 80 : 40;
+        var dailyCap = vehicleType == VehicleType.Car ? 80 : vehicleType == VehicleType.Motorcycle ? 40m : 200m;
 
         var fullDays = (int)(duration.TotalHours / 24);
 
