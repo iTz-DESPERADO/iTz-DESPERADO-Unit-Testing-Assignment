@@ -313,4 +313,31 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(expected);
     }
 
+    [Theory]
+    [InlineData(VehicleType.Car, 150)]
+    [InlineData(VehicleType.Motorcycle, 75)]
+    [InlineData(VehicleType.Truck, 300)]
+    public void Calculate_LostTicket_ReturnsCorrectFees(
+        VehicleType vehicle,
+        decimal expected)
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 16, 10, 0, 0);
+        var exit = entry.AddHours(2);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = vehicle,
+            TicketLost = true
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
 }
