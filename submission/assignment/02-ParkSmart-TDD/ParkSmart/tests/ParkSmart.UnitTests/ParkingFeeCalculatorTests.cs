@@ -287,4 +287,30 @@ public class ParkingFeeCalculatorTests
         feeResult.Should().Be(200m);
     }
 
+
+
+    [Theory]
+    [InlineData(VehicleType.Car, 30)]
+    [InlineData(VehicleType.Motorcycle, 15)]
+    [InlineData(VehicleType.Truck, 75)]
+    public void Calculate_EligibleNight_ReturnsNightFlatRate(VehicleType vehicle,decimal expected)
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 16, 22, 0, 0);
+        var exit = new DateTime(2026, 11, 17, 8, 0, 0);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = vehicle
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
 }
