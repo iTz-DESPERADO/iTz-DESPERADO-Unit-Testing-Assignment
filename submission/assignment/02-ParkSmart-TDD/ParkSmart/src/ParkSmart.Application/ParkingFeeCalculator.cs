@@ -19,7 +19,7 @@ public class ParkingFeeCalculator
 
     private static decimal CalculateFee(TimeSpan duration, VehicleType vehicleType)
     {
-        var hourlyRate = vehicleType == VehicleType.Car ? 10m : vehicleType == VehicleType.Motorcycle ? 5m : 25m;
+        var hourlyRate = HourlyRate(vehicleType);
 
         var dailyCap = vehicleType == VehicleType.Car ? 80 : 40;
 
@@ -31,4 +31,13 @@ public class ParkingFeeCalculator
 
         return (fullDays * dailyCap) + remainingFee;
     }
+
+    private static decimal HourlyRate(VehicleType vehicleType) =>
+        vehicleType switch
+        {
+            VehicleType.Car => 10m,
+            VehicleType.Motorcycle => 5m,
+            VehicleType.Truck => 25m,
+            _ => throw new ArgumentOutOfRangeException(nameof(vehicleType))
+        };
 }
