@@ -219,4 +219,26 @@ public class ParkingFeeCalculatorTests
         feeResult.Should().Be(expected);
     }
 
+
+    [Fact]
+    public void Calculate_TenHoursForMotorCycle_ReturnsDailyCap()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 13, 3, 0, 0);
+        var exit = entry.AddHours(10);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = VehicleType.Motorcycle
+        };
+
+        // Act
+        var feeResult = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        feeResult.Should().Be(40m);
+    }
+
 }
