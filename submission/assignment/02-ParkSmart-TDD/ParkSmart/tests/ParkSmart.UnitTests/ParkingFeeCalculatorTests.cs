@@ -241,4 +241,28 @@ public class ParkingFeeCalculatorTests
         feeResult.Should().Be(40m);
     }
 
+    [Theory]
+    [InlineData("2026-11-12 11:00:00", "2026-11-12 11:15:01", 25)]
+    [InlineData("2026-11-12 11:00:00", "2026-11-12 11:16:00", 25)]
+    public void Calculate_FirstStartedHourForTruck_ReturnsTwintyFive(string entryDate, string exitDate, decimal expected)
+    {
+        // Arrange
+        var entry = DateTime.ParseExact(entryDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var exit = DateTime.ParseExact(exitDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = VehicleType.Truck
+        };
+
+        // Act
+        var feeResult = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        feeResult.Should().Be(expected);
+    }
+
 }
