@@ -10,6 +10,15 @@ public class ParkingFeeCalculator
             throw new ArgumentException(
                 "Exit time must be after entry time.");
 
+        if (session.TicketLost)
+            return session.Vehicle switch
+            {
+                VehicleType.Car => 150m,
+                VehicleType.Motorcycle => 75m,
+                VehicleType.Truck => 300m,
+                _ => throw new ArgumentOutOfRangeException(nameof(session.Vehicle))
+            };
+
         var duration = session.ExitTime - session.EntryTime;
 
         if (duration <= TimeSpan.FromMinutes(15))
@@ -72,4 +81,5 @@ public class ParkingFeeCalculator
             _ => throw new ArgumentOutOfRangeException(
                 nameof(vehicleType))
         };
+
 }
