@@ -473,4 +473,33 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(15m);
     }
 
+    [Theory]
+    [InlineData(VehicleType.Car, 48, 150)]
+    [InlineData(VehicleType.Motorcycle, 48, 75)]
+    [InlineData(VehicleType.Truck, 30, 300)]
+    public void Calculate_SubscriberLostTicket_AppliesMinimumAfterDiscount(
+        VehicleType vehicle,
+        int hours,
+        decimal expected)
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 16, 10, 0, 0);
+        var exit = entry.AddHours(hours);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = vehicle,
+            IsSubscriber = true,
+            TicketLost = true
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
 }
