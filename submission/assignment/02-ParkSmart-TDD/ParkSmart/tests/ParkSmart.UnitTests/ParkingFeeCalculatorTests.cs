@@ -194,4 +194,29 @@ public class ParkingFeeCalculatorTests
         feeResult.Should().Be(expected);
     }
 
+
+    [Theory]
+    [InlineData("2026-11-12 11:00:00", "2026-11-12 11:15:01", 5)]
+    [InlineData("2026-11-12 11:00:00", "2026-11-12 11:16:00", 5)]
+    public void Calculate_FirstStartedHourForMotoCycle_ReturnsFive(string entryDate, string exitDate, decimal expected)
+    {
+        // Arrange
+        var entry = DateTime.ParseExact(entryDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var exit = DateTime.ParseExact(exitDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = VehicleType.Motorcycle
+        };
+
+        // Act
+        var feeResult = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        feeResult.Should().Be(expected);
+    }
+
 }
