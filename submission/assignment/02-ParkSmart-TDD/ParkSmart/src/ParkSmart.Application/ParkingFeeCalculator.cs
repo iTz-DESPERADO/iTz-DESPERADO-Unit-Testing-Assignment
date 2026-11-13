@@ -14,16 +14,18 @@ public class ParkingFeeCalculator
         if (duration <= TimeSpan.FromMinutes(15))
             return 0m;
 
-        return CalculateFee(duration);
+        return CalculateFee(duration,session.Vehicle);
     }
 
-    private static decimal CalculateFee(TimeSpan duration)
+    private static decimal CalculateFee(TimeSpan duration,VehicleType vehicleType)
     {
+        var hourlyRate = vehicleType == VehicleType.Car ? 10m : 5m;
+
         var fullDays = (int)(duration.TotalHours / 24);
 
         var remainingDuration = duration - TimeSpan.FromDays(fullDays);
 
-        var remainingFee = Math.Min((decimal)Math.Ceiling(remainingDuration.TotalHours) * 10m, 80m);
+        var remainingFee = Math.Min((decimal)Math.Ceiling(remainingDuration.TotalHours) * hourlyRate, 80m);
 
         return (fullDays * 80m) + remainingFee;
     }
