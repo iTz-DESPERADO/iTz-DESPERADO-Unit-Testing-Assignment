@@ -20,3 +20,4 @@ Group / ID: G4
 | `red(S5)` / `green(S5)` | `Calculate_FirstStartedHourForTruck_ReturnsTwentyFive` | Expected `25m` but found `5m` | Used the Truck hourly rate of `25m` | Extracted `HourlyRate()` |
 | `red(S5)` / `green(S5)` | `Calculate_TenHoursForTruck_ReturnsDailyCap` | Expected `200m` but found `40m` | Used the Truck daily cap of `200m` | Extracted `DailyCap()` |
 | `red(S6)` / `green(S6)` | `Calculate_EligibleNight_ReturnsNightFlatRate` | Expected `30m`, `15m`, and `75m` but found the normal daily fees | Added the night flat rates for each vehicle type | Extracted `NightFlatRate()` |
+| `red(S7)` / `green(S7)` | `Calculate_LostTicket_ReturnsCorrectFees` | Expected `150m`, `75m`, and `300m` but found `20m`, `10m`, and `50m` | Added the Lost Ticket fees for each vehicle type | None |
