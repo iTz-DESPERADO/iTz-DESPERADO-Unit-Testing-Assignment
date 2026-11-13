@@ -340,4 +340,29 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(expected);
     }
 
+    [Theory]
+    [InlineData(VehicleType.Car, 48, 160)]
+    [InlineData(VehicleType.Motorcycle, 48, 80)]
+    [InlineData(VehicleType.Truck, 30, 350)]
+    public void Calculate_LostTicket_WhenNormalFeeIsHigher_ReturnsHigherFee(VehicleType vehicle,int hours,decimal expected)
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 16, 10, 0, 0);
+        var exit = entry.AddHours(hours);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = vehicle,
+            TicketLost = true
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
 }
