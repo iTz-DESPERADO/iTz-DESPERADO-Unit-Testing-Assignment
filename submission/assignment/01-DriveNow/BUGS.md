@@ -1,0 +1,15 @@
+# Bugs
+
+Name: Gamal Khaled Mohamed
+Group / ID: G4
+
+| # | Rule | Failing test | Expected | Actual | Fix commit |
+|---|---|---|---|---|---|
+| 1 | BR-03 / BR-30 | `CalculateRentalDays_WithinGracePeriod_ReturnsOneDay` - 25 hours; `CalculateRentalDays_GracePeriodAfterTwoDays_ReturnsCorrectDays` - 49 hours; `Calculate_RentalDuration_ReturnsCorrectDaysAndBaseAmount` - 25 hours | 1 day; 2 days; 1 day and 600 base amount | 2 days; 3 days; 2 days | `ee36768` |
+| 2 | BR-33 | `Calculate_RentalDays_ReturnsCorrectDurationDiscount` - 7 days | 420 | 0 | `7cbd404` |
+| 3 | BR-37 | `Calculate_DiscountCap_ReturnsCorrectPromoDiscount` - 7 days, Gold, Promo 15% | 210 | 630 | `97ab4c1` |
+| 4 | BR-39 | `Calculate_WorkedExample_ReturnsWholePriceBreakdown` - Example B, Silver, extra driver | 700 | 0 | `7f5cbc9` |
+| 5 | BR-16 | `CreateBooking_LuxuryDriverIsExactlyTwentyFiveWithThreeLicenseYears_CreatesBooking` | booking is created | `BookingRejectedException` | `487f190` |
+| 6 | BR-21 | `CreateBooking_PickupEqualsExistingReturn_CreatesBooking` and `CreateBooking_ReturnEqualsExistingPickup_CreatesBooking` | back-to-back booking is created | `BookingRejectedException` | `4a2a0c4` |
+| 7 | BR-41 | `ProcessReturn_LateMinutes_ReturnsCorrectLateFee` - 240 minutes | 240 EGP | 600 EGP | `3bb944a` |
+| 8 | BR-51 | `Cancel_HoursUntilPickup_ReturnsCorrectFee` - 48 hours | 0 EGP | 300 EGP | `43edb7f` |

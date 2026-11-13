@@ -1,0 +1,15 @@
+﻿DriveNow receipt DN-2026-001
+Base rental...................1,200.00 EGP
+Weekend surcharge.............  120.00 EGP
+Young driver surcharge........  150.00 EGP
+Duration discount.............  -60.00 EGP
+Loyalty discount..............  -90.00 EGP
+Promo discount................  -30.00 EGP
+Insurance.....................  240.00 EGP
+Additional drivers............   50.00 EGP
+Late fee......................  240.00 EGP
+Extra mileage.................   15.75 EGP
+Fuel..........................  200.00 EGP
+Damage........................1,000.00 EGP
+VAT 14%.......................  425.01 EGP
+Total.........................3,460.76 EGP
