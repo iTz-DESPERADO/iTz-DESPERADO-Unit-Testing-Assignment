@@ -407,4 +407,26 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(30m);
     }
 
+    [Fact]
+    public void Calculate_SubscriberWithinWeekdayFreeWindow_ReturnsZero()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 16, 9, 0, 0);
+        var exit = new DateTime(2026, 11, 16, 17, 0, 0);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = VehicleType.Car,
+            IsSubscriber = true
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(0m);
+    }
+
 }
