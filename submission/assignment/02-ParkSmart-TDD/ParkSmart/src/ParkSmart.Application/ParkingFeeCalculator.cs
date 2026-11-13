@@ -6,6 +6,24 @@ public class ParkingFeeCalculator
 {
     public decimal Calculate(ParkingSession session)
     {
+        if (session.ChargedKwh < 0m)
+            throw new ArgumentException(
+                "Charged kWh cannot be negative.");
+
+        var parkingFee = CalculateParkingFee(session);
+
+        var chargingFee = session.ChargedKwh * 3.50m;
+
+        var total = parkingFee + chargingFee;
+
+        return Math.Round(
+            total,
+            2,
+            MidpointRounding.AwayFromZero);
+    }
+
+    private static decimal CalculateParkingFee(ParkingSession session)
+    {
         if (session.ExitTime < session.EntryTime)
             throw new ArgumentException(
                 "Exit time must be after entry time.");
