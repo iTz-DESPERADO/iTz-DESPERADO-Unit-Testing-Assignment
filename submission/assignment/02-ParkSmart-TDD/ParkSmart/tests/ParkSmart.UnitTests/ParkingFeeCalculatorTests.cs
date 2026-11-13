@@ -502,4 +502,27 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(expected);
     }
 
+
+
+    [Fact]
+    public void Calculate_SubscriberEligibleNight_ReturnsHalfNightFee()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 14, 23, 0, 0);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = entry.AddHours(8),
+            Vehicle = VehicleType.Car,
+            IsSubscriber = true
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(15m);
+    }
+
 }
