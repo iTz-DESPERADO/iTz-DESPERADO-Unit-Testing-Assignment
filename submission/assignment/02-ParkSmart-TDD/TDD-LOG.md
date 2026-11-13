@@ -23,3 +23,4 @@ Group / ID: G4
 | `red(S7)` / `green(S7)` | `Calculate_LostTicket_ReturnsCorrectFees` | Expected `150m`, `75m`, and `300m` but found `20m`, `10m`, and `50m` | Added the Lost Ticket fees for each vehicle type | Extracted `LostTicketFee()` |
 | `red(S7)` / `green(S7)` | `Calculate_LostTicket_WhenNormalFeeIsHigher_ReturnsHigherFee` | Expected `160m`, `80m`, and `350m` but found `150m`, `75m`, and `300m` | Returned the higher value between the normal fee and the Lost Ticket fee | None |
 | `red(S8)` / `green(S8)` | `Calculate_FridayParkingUpToTwoHours_ReturnsZero` | Expected `0m` but found `20m` | Changed Friday's free period from 15 minutes to 2 hours | None |
+| `red(S9)` / `green(S9)` | `Calculate_SubscriberWithinWeekdayFreeWindow_ReturnsZero` | Expected `0m` but found `80m` | Added the subscriber free window for Sunday to Thursday, from 07:00 to 19:00 | None |
