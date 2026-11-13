@@ -27,6 +27,12 @@ public class ParkingFeeCalculator
         if (duration <= freePeriod)
             return 0m;
 
+        if (session.IsSubscriber)
+            return Math.Round(
+                normalFee * 0.50m,
+                2,
+                MidpointRounding.AwayFromZero);
+
         var nightStart = session.EntryTime.Date.AddHours(22);
 
         var nightEnd = nightStart.AddHours(10);
