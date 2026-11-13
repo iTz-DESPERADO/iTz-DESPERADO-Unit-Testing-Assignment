@@ -17,20 +17,7 @@ public class ParkingFeeCalculator
         if (session.TicketLost)
             return Math.Max(normalFee, LostTicketFee(session.Vehicle));
 
-        var isWeekday = session.EntryTime.DayOfWeek is
-            DayOfWeek.Sunday or
-            DayOfWeek.Monday or
-            DayOfWeek.Tuesday or
-            DayOfWeek.Wednesday or
-            DayOfWeek.Thursday;
-
-        var isSubscriberFree = session.IsSubscriber &&
-            session.EntryTime.Date == session.ExitTime.Date &&
-            isWeekday &&
-            session.EntryTime.TimeOfDay >= TimeSpan.FromHours(7) &&
-            session.ExitTime.TimeOfDay <= TimeSpan.FromHours(19);
-
-        if (isSubscriberFree)
+        if (IsSubscriberFree(session))
             return 0m;
 
         var freePeriod = session.EntryTime.DayOfWeek == DayOfWeek.Friday
@@ -51,6 +38,22 @@ public class ParkingFeeCalculator
 
 
         return Math.Min(normalFee, NightFlatRate(session.Vehicle));
+    }
+
+    private static bool IsSubscriberFree(ParkingSession session)
+    {
+        var isWeekday = session.EntryTime.DayOfWeek is
+            DayOfWeek.Sunday or
+            DayOfWeek.Monday or
+            DayOfWeek.Tuesday or
+            DayOfWeek.Wednesday or
+            DayOfWeek.Thursday;
+
+        return session.IsSubscriber &&
+            session.EntryTime.Date == session.ExitTime.Date &&
+            isWeekday &&
+            session.EntryTime.TimeOfDay >= TimeSpan.FromHours(7) &&
+            session.ExitTime.TimeOfDay <= TimeSpan.FromHours(19);
     }
 
     private static decimal CalculateFee(TimeSpan duration, VehicleType vehicleType)
