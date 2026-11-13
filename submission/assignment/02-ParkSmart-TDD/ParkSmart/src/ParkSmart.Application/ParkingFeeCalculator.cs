@@ -17,6 +17,22 @@ public class ParkingFeeCalculator
         if (session.TicketLost)
             return Math.Max(normalFee, LostTicketFee(session.Vehicle));
 
+        var isWeekday = session.EntryTime.DayOfWeek is
+            DayOfWeek.Sunday or
+            DayOfWeek.Monday or
+            DayOfWeek.Tuesday or
+            DayOfWeek.Wednesday or
+            DayOfWeek.Thursday;
+
+        var isSubscriberFree = session.IsSubscriber &&
+            session.EntryTime.Date == session.ExitTime.Date &&
+            isWeekday &&
+            session.EntryTime.TimeOfDay >= TimeSpan.FromHours(7) &&
+            session.ExitTime.TimeOfDay <= TimeSpan.FromHours(19);
+
+        if (isSubscriberFree)
+            return 0m;
+
         var freePeriod = session.EntryTime.DayOfWeek == DayOfWeek.Friday
             ? TimeSpan.FromHours(2)
             : TimeSpan.FromMinutes(15);
