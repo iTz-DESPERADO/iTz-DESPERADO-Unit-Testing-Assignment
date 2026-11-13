@@ -28,3 +28,19 @@ Group / ID: G4
 | `red(S9)` / `green(S9)` | `Calculate_SubscriberLostTicket_AppliesMinimumAfterDiscount` | Expected `150m`, `75m`, and `300m` but found `160m`, `80m`, and `350m` | Applied the 50% subscriber discount before checking the Lost Ticket minimum | None |
 | `red(S9)` / `green(S9)` |`Calculate_SubscriberEligibleNight_ReturnsHalfNightFee` | Expected `15m` but found `40m`. The subscriber discount was applied to the normal fee before checking the night flat rate. | Changed the calculation to apply the night flat rate first, then apply the 50% subscriber discount to the resulting fee. | None |
 | `red(S10)` / `green(S10)` | `Calculate_TwoHoursWithCharging_ReturnsFiftyFive`, `Calculate_SubscriberFreeWindowWithCharging_ReturnsChargingFee`, `Calculate_ChargingBeyondDailyCap_ReturnsFullChargingFee`, `Calculate_NegativeCharging_ThrowsArgumentException` | Charging fees were not calculated The existing code returned only parking fees and negative kWh was not rejected | Added validation for negative kWh separated the parking fee calculation and added `3.50m` per kWh after parking fees without applying discounts or the daily cap to charging | None |
+
+
+
+
+
+## الخلاصة النهائية
+
+اكثر مرحلة احتجت فيها لتعديل الكود كانت S10
+
+السبب اني كنت استخدم return في اكثر من مكان وهذا كان يمنع اضافة رسوم الشحن في بعض الحالات
+
+فصلت حساب رسوم الوقوف عن رسوم الشحن حتى يتم حساب كل شيء بشكل صحيح
+
+تعلمت من TDD اني مش محتاج اتوقع كل المتطلبات من البداية بل ابدأ بحل بسيط واطور التصميم مع كل متطلب جديد
+
+وتعلمت ان نجاح الاختبارات لا يعني دائما ان تصميم الكود مناسب للتغييرات القادمه
