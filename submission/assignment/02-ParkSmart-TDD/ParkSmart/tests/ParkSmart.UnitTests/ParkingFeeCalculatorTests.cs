@@ -169,4 +169,29 @@ public class ParkingFeeCalculatorTests
     }
 
 
+    [Theory]
+    [InlineData("2026-11-13 00:00:00", "2026-11-14 06:00:00", 140)]
+    [InlineData("2026-11-13 00:00:00", "2026-11-15 00:00:00", 160)]
+    [InlineData("2026-11-13 00:00:00", "2026-11-15 00:10:00", 170)]
+    public void Calculate_MultipleDays_ReturnsCorrectFee(string entryDate, string exitDate, decimal expected)
+    {
+        // Arrange
+        var entry = DateTime.ParseExact(entryDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var exit = DateTime.ParseExact(exitDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = exit,
+            Vehicle = VehicleType.Car
+        };
+
+        // Act
+        var feeResult = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        feeResult.Should().Be(expected);
+    }
+
 }
