@@ -525,4 +525,91 @@ public class ParkingFeeCalculatorTests
         result.Should().Be(15m);
     }
 
+    [Fact]
+    public void Calculate_TwoHoursWithCharging_ReturnsFiftyFive()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 16, 10, 0, 0);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = entry.AddHours(2),
+            Vehicle = VehicleType.Car,
+            ChargedKwh = 10m
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(55m);
+    }
+
+    [Fact]
+    public void Calculate_SubscriberFreeWindowWithCharging_ReturnsChargingFee()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 16, 10, 0, 0);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = entry.AddHours(2),
+            Vehicle = VehicleType.Car,
+            IsSubscriber = true,
+            ChargedKwh = 4m
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(14m);
+    }
+
+    [Fact]
+    public void Calculate_ChargingBeyondDailyCap_ReturnsFullChargingFee()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 12, 10, 0, 0);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = entry.AddHours(10),
+            Vehicle = VehicleType.Car,
+            ChargedKwh = 10m
+        };
+
+        // Act
+        var result = new ParkingFeeCalculator().Calculate(session);
+
+        // Assert
+        result.Should().Be(115m);
+    }
+
+    [Fact]
+    public void Calculate_NegativeCharging_ThrowsArgumentException()
+    {
+        // Arrange
+        var entry = new DateTime(2026, 11, 12, 10, 0, 0);
+
+        var session = new ParkingSession
+        {
+            EntryTime = entry,
+            ExitTime = entry.AddMinutes(5),
+            Vehicle = VehicleType.Car,
+            ChargedKwh = -1m
+        };
+
+        var sut = new ParkingFeeCalculator();
+
+        // Act
+        Action act = () => sut.Calculate(session);
+
+        // Assert
+        act.Should().Throw<ArgumentException>();
+    }
+
 }
