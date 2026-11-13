@@ -14,6 +14,19 @@ public class ParkingFeeCalculator
         if (duration <= TimeSpan.FromMinutes(15))
             return 0m;
 
+        var nightStart = session.EntryTime.Date.AddHours(22);
+        var nightEnd = nightStart.AddHours(10);
+
+        if (session.EntryTime >= nightStart &&  session.ExitTime <= nightEnd.AddHours(10))
+        {
+            switch(session.Vehicle)
+            {
+                case VehicleType.Car: return Math.Min(CalculateFee(duration, session.Vehicle), 30);
+                case VehicleType.Motorcycle: return Math.Min(CalculateFee(duration, session.Vehicle), 15);
+                case VehicleType.Truck: return Math.Min(CalculateFee(duration, session.Vehicle), 75);
+            }
+        }
+
         return CalculateFee(duration, session.Vehicle);
     }
 
